@@ -44,7 +44,8 @@ app.post('/image', async (req, res) => {
 
 app.listen(port, () => {
     try {
-        fs.opendirSync("data")
+        let dir = fs.opendirSync("data")
+        dir.closeSync()
     } catch {
         fs.mkdirSync('data')
     }
