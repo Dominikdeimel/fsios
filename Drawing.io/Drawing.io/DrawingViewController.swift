@@ -129,14 +129,15 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
         canvasView.scrollIndicatorInsets = canvasView.contentInset
     }
     
-    func saveImg() {
+    func saveImg() -> UIImage {
         let frame = CGRect(origin: .zero, size: CGSize(width: canvasView.bounds.width * 2, height: canvasView.bounds.height * 1.5))
-        let image = canvasView.drawing.image(from: frame, scale: 1.0)
-        if let data = image.jpegData(compressionQuality: 1.0) {
+        return canvasView.drawing.image(from: frame, scale: 1.0)
+        /*if let data = image.jpegData(compressionQuality: 1.0) {
             let filename = getDocumentsDirectory().appendingPathComponent("copy.png")
             print(filename)
             try? data.write(to: filename)
-        }
+            
+        }*/
     }
     
     func getDocumentsDirectory() -> URL {

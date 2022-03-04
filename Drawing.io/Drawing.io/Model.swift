@@ -20,10 +20,9 @@ struct Model {
             .eraseToAnyPublisher()
     }
     
-    func postImage() -> AnyPublisher<Int, URLError> {
+    func postImage(_ image: UIImage) -> AnyPublisher<Int, URLError> {
         let url = URL(string: "http://localhost:3000/image")!
         
-        let image = UIImage(named: "corn.png")!
         let imageData = image.jpegData(compressionQuality: 1)
         let imageBase64String = imageData?.base64EncodedString()
         

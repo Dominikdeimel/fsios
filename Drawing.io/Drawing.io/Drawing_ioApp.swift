@@ -10,9 +10,9 @@ import SwiftUI
 @main
 struct Drawing_ioApp: App {
     var body: some Scene {
-        let viewModel = ViewModel()
+        //let viewModel = ViewModel()
         WindowGroup {
-            ContentView(viewModel: viewModel)
+            ContentView()
         }
     }
 }
