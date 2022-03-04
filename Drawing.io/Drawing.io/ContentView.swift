@@ -11,6 +11,8 @@ import PencilKit
 struct ContentView: View {
     @Environment(\.undoManager) private var undoManager
     private var drawingController = DrawingViewController()
+    @State private var submitAlert = false
+    @State private var clearAlert = false
     
     var body: some View {
         VStack {
@@ -19,19 +21,39 @@ struct ContentView: View {
                     .padding(.horizontal)
                 Spacer()
                 Button(action: {
-                    
+                    submitAlert = true
                 }, label: {
                     Image(systemName: "checkmark")
                 })
+                    .alert(isPresented:$submitAlert) {
+                        Alert(
+                            title: Text("Fertig?"),
+                            primaryButton:
+                                    .default(Text("Ja")) {
+                                        drawingController.saveImg()
+                                    },
+                            secondaryButton: .cancel()
+                        )
+                    }
                     .padding(.horizontal)
             }
             .padding(.vertical)
             HStack {
                 Button(action: {
-                    drawingController.clear()
+                    clearAlert = true
                 }, label: {
                     Image(systemName: "trash")
                 })
+                    .alert(isPresented:$clearAlert) {
+                        Alert(
+                            title: Text("Löschen?"),
+                            primaryButton:
+                                    .destructive(Text("Ja")) {
+                                        drawingController.clear()
+                                    },
+                            secondaryButton: .cancel()
+                        )
+                    }
                     .padding(.horizontal)
                 Spacer()
                 Button(action: {
@@ -46,7 +68,9 @@ struct ContentView: View {
                 })
                     .padding(.horizontal)
             }
-            Canvas(vc: drawingController)
+            Canvas(vc: drawingController).onAppear {
+                drawingController.clear()
+            }
         }
     }
 }

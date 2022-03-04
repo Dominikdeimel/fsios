@@ -1,55 +1,14 @@
-/*
- See LICENSE folder for this sample’s licensing information.
- 
- Abstract:
- `DrawingViewController` is the primary view controller for showing drawings.
- */
-
-///`PKCanvasView` is the main drawing view that you will add to your view hierarchy.
-/// The drawingPolicy dictates whether drawing with a finger is allowed.  If it's set to default and if the tool picker is visible,
-/// then it will respect the global finger pencil toggle in Settings or as set in the tool picker.  Otherwise, only drawing with
-/// a pencil is allowed.
-
-/// You can add your own class as a delegate of PKCanvasView to receive notifications after a user
-/// has drawn or the drawing was updated. You can also set the tool or toggle the ruler on the canvas.
-
-/// There is a shared tool picker for each window. The tool picker floats above everything, similar
-/// to the keyboard. The tool picker is moveable in a regular size class window, and fixed to the bottom
-/// in compact size class. To listen to tool picker notifications, add yourself as an observer.
-
-/// Tool picker visibility is based on first responders. To make the tool picker appear, you need to
-/// associate the tool picker with a `UIResponder` object, such as a view, by invoking the method
-/// `UIToolpicker.setVisible(_:forResponder:)`, and then by making that responder become the first
-
-/// Best practices:
-///
-/// -- Because the tool picker palette is floating and moveable for regular size classes, but fixed to the
-/// bottom in compact size classes, make sure to listen to the tool picker's obscured frame and adjust your UI accordingly.
-
-/// -- For regular size classes, the palette has undo and redo buttons, but not for compact size classes.
-/// Make sure to provide your own undo and redo buttons when in a compact size class.
-
 import UIKit
 import PencilKit
 
-class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPickerObserver, UIScreenshotServiceDelegate {
+class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPickerObserver {
     
     private lazy var canvasView: PKCanvasView = PKCanvasView(frame: self.view.bounds)
-    
-    //    var undoBarButtonitem: UIBarButtonItem!
-    //    var redoBarButtonItem: UIBarButtonItem!
     
     var toolPicker: PKToolPicker!
     
     /// Standard amount of overscroll allowed in the canvas.
     static let canvasOverscrollHeight: CGFloat = 500
-    
-    /// Data model for the drawing displayed by this view controller.
-    var dataModelController: DataModelController!
-    
-    /// Private drawing state.
-    var drawingIndex: Int = 0
-    var hasModifiedDrawing = false
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -74,7 +33,6 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
     
     private func setupCanvasView() {
         canvasView.delegate = self
-        canvasView.drawing = dataModelController.drawings[drawingIndex]
         canvasView.alwaysBounceVertical = true
     }
     
@@ -89,19 +47,14 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
         toolPicker.addObserver(self)
         updateLayout(for: toolPicker)
         canvasView.becomeFirstResponder()
-    
-        // Always show a back button.
-        navigationItem.leftItemsSupplementBackButton = true
         
-        // Set this view controller as the delegate for creating full screenshots.
-        parent?.view.window?.windowScene?.screenshotService?.delegate = self
     }
     
     /// When the view is resized, adjust the canvas scale so that it is zoomed to the default `canvasWidth`.
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let canvasScale = canvasView.bounds.width / DataModel.canvasWidth
+        let canvasScale = canvasView.bounds.width / 768
         canvasView.minimumZoomScale = canvasScale
         canvasView.maximumZoomScale = canvasScale
         canvasView.zoomScale = canvasScale
@@ -111,40 +64,14 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
         canvasView.contentOffset = CGPoint(x: 0, y: -canvasView.adjustedContentInset.top)
     }
     
-    /// When the view is removed, save the modified drawing, if any.
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Update the drawing in the data model, if it has changed.
-        if hasModifiedDrawing {
-            dataModelController.updateDrawing(canvasView.drawing, at: drawingIndex)
-        }
-        
-        // Remove this view controller as the screenshot delegate.
-        view.window?.windowScene?.screenshotService?.delegate = nil
-    }
-    
     /// Hide the home indicator, as it will affect latency.
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
-    
-    // MARK: Actions
-    
-    /// Helper method to set a new drawing, with an undo action to go back to the old one.
-    func setNewDrawingUndoable(_ newDrawing: PKDrawing) {
-        let oldDrawing = canvasView.drawing
-        undoManager?.registerUndo(withTarget: self) {
-            $0.setNewDrawingUndoable(oldDrawing)
-        }
-        canvasView.drawing = newDrawing
-    }
-        
     // MARK: Canvas View Delegate
     
     /// Delegate method: Note that the drawing has changed.
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        hasModifiedDrawing = true
         updateContentSizeForDrawing()
     }
     
@@ -160,7 +87,7 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
         } else {
             contentHeight = canvasView.bounds.height
         }
-        canvasView.contentSize = CGSize(width: DataModel.canvasWidth * canvasView.zoomScale, height: contentHeight)
+        canvasView.contentSize = CGSize(width: 768 * canvasView.zoomScale, height: contentHeight)
     }
     
     // MARK: Tool Picker Observer
@@ -202,58 +129,19 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
         canvasView.scrollIndicatorInsets = canvasView.contentInset
     }
     
-    // MARK: Screenshot Service Delegate
-    
-    /// Delegate method: Generate a screenshot as a PDF.
-    func screenshotService(
-        _ screenshotService: UIScreenshotService,
-        generatePDFRepresentationWithCompletion completion:
-        @escaping (_ PDFData: Data?, _ indexOfCurrentPage: Int, _ rectInCurrentPage: CGRect) -> Void) {
-            
-            // Find out which part of the drawing is actually visible.
-            let drawing = canvasView.drawing
-            let visibleRect = canvasView.bounds
-            
-            // Convert to PDF coordinates, with (0, 0) at the bottom left hand corner,
-            // making the height a bit bigger than the current drawing.
-            let pdfWidth = DataModel.canvasWidth
-            let pdfHeight = drawing.bounds.maxY + 100
-            let canvasContentSize = canvasView.contentSize.height - DrawingViewController.canvasOverscrollHeight
-            
-            let xOffsetInPDF = pdfWidth - (pdfWidth * visibleRect.minX / canvasView.contentSize.width)
-            let yOffsetInPDF = pdfHeight - (pdfHeight * visibleRect.maxY / canvasContentSize)
-            let rectWidthInPDF = pdfWidth * visibleRect.width / canvasView.contentSize.width
-            let rectHeightInPDF = pdfHeight * visibleRect.height / canvasContentSize
-            
-            let visibleRectInPDF = CGRect(
-                x: xOffsetInPDF,
-                y: yOffsetInPDF,
-                width: rectWidthInPDF,
-                height: rectHeightInPDF)
-            
-            // Generate the PDF on a background thread.
-            DispatchQueue.global(qos: .background).async {
-                
-                // Generate a PDF.
-                let bounds = CGRect(x: 0, y: 0, width: pdfWidth, height: pdfHeight)
-                let mutableData = NSMutableData()
-                UIGraphicsBeginPDFContextToData(mutableData, bounds, nil)
-                UIGraphicsBeginPDFPage()
-                
-                // Generate images in the PDF, strip by strip.
-                var yOrigin: CGFloat = 0
-                let imageHeight: CGFloat = 1024
-                while yOrigin < bounds.maxY {
-                    let imgBounds = CGRect(x: 0, y: yOrigin, width: DataModel.canvasWidth, height: min(imageHeight, bounds.maxY - yOrigin))
-                    let img = drawing.image(from: imgBounds, scale: 2)
-                    img.draw(in: imgBounds)
-                    yOrigin += imageHeight
-                }
-                
-                UIGraphicsEndPDFContext()
-                
-                // Invoke the completion handler with the generated PDF data.
-                completion(mutableData as Data, 0, visibleRectInPDF)
-            }
+    func saveImg() {
+        let frame = CGRect(origin: .zero, size: CGSize(width: canvasView.bounds.width * 2, height: canvasView.bounds.height * 1.5))
+        let image = canvasView.drawing.image(from: frame, scale: 1.0)
+        if let data = image.jpegData(compressionQuality: 1.0) {
+            let filename = getDocumentsDirectory().appendingPathComponent("copy.png")
+            print(filename)
+            try? data.write(to: filename)
         }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
 }

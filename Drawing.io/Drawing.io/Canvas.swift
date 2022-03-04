@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct Canvas: UIViewControllerRepresentable {
-    var dataModelController = DataModelController()
     var vc: DrawingViewController
     
     func makeUIViewController(context: Context) -> DrawingViewController {
-        vc.dataModelController = dataModelController
-        dataModelController.newDrawing()
-        vc.drawingIndex = 0
+        //vc.clear()
         return vc
     }
     
