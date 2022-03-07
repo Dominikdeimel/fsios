@@ -11,7 +11,6 @@ struct Canvas: UIViewControllerRepresentable {
     var vc: DrawingViewController
     
     func makeUIViewController(context: Context) -> DrawingViewController {
-        //vc.clear()
         return vc
     }
     

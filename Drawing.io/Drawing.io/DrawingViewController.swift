@@ -132,17 +132,6 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
     func saveImg() -> UIImage {
         let frame = CGRect(origin: .zero, size: CGSize(width: canvasView.bounds.width * 2, height: canvasView.bounds.height * 1.5))
         return canvasView.drawing.image(from: frame, scale: 1.0)
-        /*if let data = image.jpegData(compressionQuality: 1.0) {
-            let filename = getDocumentsDirectory().appendingPathComponent("copy.png")
-            print(filename)
-            try? data.write(to: filename)
-            
-        }*/
-    }
-    
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
     }
     
 }
