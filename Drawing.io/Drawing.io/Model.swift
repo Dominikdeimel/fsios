@@ -11,14 +11,14 @@ import Combine
 
 struct Model {
     
-    func getData() -> AnyPublisher<UserImage, Error> {
+    /*func getData() -> AnyPublisher<UserImage, Error> {
         let url = URL(string: "http://localhost:3000/image")!
         return URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
             .decode(type: UserImage.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-    }
+    }*/
     
     func postImage(_ image: UIImage) -> AnyPublisher<Int, URLError> {
         let url = URL(string: "http://localhost:3000/image")!

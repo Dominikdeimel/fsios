@@ -32,7 +32,7 @@ class ViewModel: ObservableObject {
         self.postCancellable =  model.postImage(image).sink(receiveCompletion: {
             err in print(err)
         }, receiveValue: {_ in
-            //TODO: Error Handling
+            //TODO:
         })
     }
     
