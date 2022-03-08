@@ -16,6 +16,8 @@
 		2B6E9E5827D7696600B97936 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6E9E5727D7696600B97936 /* MenuView.swift */; };
 		2B95DEB527D2723100DF0613 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95DEB327D2723100DF0613 /* Canvas.swift */; };
 		2B95DEB827D2726500DF0613 /* DrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95DEB727D2726500DF0613 /* DrawingViewController.swift */; };
+		85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D348EB27D7822300FCDC10 /* GuessingView.swift */; };
+		85D348EE27D783D000FCDC10 /* sample.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 85D348ED27D783D000FCDC10 /* sample.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		2B6E9E5727D7696600B97936 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		2B95DEB327D2723100DF0613 /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		2B95DEB727D2726500DF0613 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
+		85D348EB27D7822300FCDC10 /* GuessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessingView.swift; sourceTree = "<group>"; };
+		85D348ED27D783D000FCDC10 /* sample.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample.jpeg; path = ../../../../../Downloads/sample.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,10 +70,12 @@
 				2B14E69F27CE2BA90048502D /* ContentView.swift */,
 				2B14E6AB27CE2F900048502D /* ViewModel.swift */,
 				2B14E6A127CE2BAB0048502D /* Assets.xcassets */,
+				85D348ED27D783D000FCDC10 /* sample.jpeg */,
 				2B14E6A327CE2BAB0048502D /* Preview Content */,
 				2B14E6AD27CE2F9C0048502D /* Model.swift */,
 				2B95DEB327D2723100DF0613 /* Canvas.swift */,
 				2B6E9E5727D7696600B97936 /* MenuView.swift */,
+				85D348EB27D7822300FCDC10 /* GuessingView.swift */,
 			);
 			path = Drawing.io;
 			sourceTree = "<group>";
@@ -142,6 +148,7 @@
 			files = (
 				2B14E6A527CE2BAB0048502D /* Preview Assets.xcassets in Resources */,
 				2B14E6A227CE2BAB0048502D /* Assets.xcassets in Resources */,
+				85D348EE27D783D000FCDC10 /* sample.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +164,7 @@
 				2B95DEB827D2726500DF0613 /* DrawingViewController.swift in Sources */,
 				2B14E6AC27CE2F900048502D /* ViewModel.swift in Sources */,
 				2B14E69E27CE2BA90048502D /* Drawing_ioApp.swift in Sources */,
+				85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */,
 				2B95DEB527D2723100DF0613 /* Canvas.swift in Sources */,
 				2B14E6AE27CE2F9C0048502D /* Model.swift in Sources */,
 			);
