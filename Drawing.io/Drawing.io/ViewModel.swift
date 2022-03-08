@@ -13,11 +13,12 @@ class ViewModel: ObservableObject {
     private var model = Model()
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
+    @Published var image = UIImage()
     
     
     func loadImage() {
-     /*   self.getCancellable?.cancel()
-        self.getCancellable = model.getData().sink(receiveCompletion: {
+        self.getCancellable?.cancel()
+        self.getCancellable = model.getImage().sink(receiveCompletion: {
             err in print(err)
         }, receiveValue: { data in            
             let imageData = Data(base64Encoded: data.imageAsBase64)
@@ -25,7 +26,7 @@ class ViewModel: ObservableObject {
                 self.image = UIImage(data: imageData)!
             }
             
-        })*/
+        })
     }
     func postData(_ image: UIImage) {
         self.postCancellable?.cancel()

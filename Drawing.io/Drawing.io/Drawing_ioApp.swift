@@ -10,7 +10,6 @@ import SwiftUI
 @main
 struct Drawing_ioApp: App {
     var body: some Scene {
-        //let viewModel = ViewModel()
         WindowGroup {
             MenuView()
         }

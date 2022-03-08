@@ -10,13 +10,14 @@ import SwiftUI
 struct GuessingView: View {
     @State private var word: String = ""
     @FocusState private var fieldIsFocused: Bool
+    @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
         VStack {
             Button("Get Image") {
-                print("Bild ist da")
+                viewModel.loadImage()
             }
-            Image("sample")
+            Image(uiImage: viewModel.image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .border(.gray)

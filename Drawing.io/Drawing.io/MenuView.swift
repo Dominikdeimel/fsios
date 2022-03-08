@@ -11,14 +11,26 @@ struct MenuView: View {
     var body: some View {
         NavigationView {
             VStack {
+                Spacer()
                 NavigationLink(destination: ContentView()) {
-                    Text("Draw")
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(.cyan)
+                            .frame(width: 250, height: 100)
+                        Text("Draw").foregroundColor(.black)
+                    }
                 }
-                NavigationLink(destination: EmptyView()) {
-                    Text("Guess")
+                Spacer()
+                NavigationLink(destination: GuessingView()) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(.cyan)
+                            .frame(width: 250, height: 100)
+                        Text("Guess").foregroundColor(.black)
+                    }
                 }
-            }.navigationTitle("Hallo Alex")
-                .navigationBarTitleDisplayMode(.inline)
+                Spacer()
+            }.navigationTitle("Drawing.io").navigationBarTitleDisplayMode(.inline)
         }
     }
 }
