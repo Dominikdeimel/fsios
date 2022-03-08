@@ -12,7 +12,7 @@ struct Drawing_ioApp: App {
     var body: some Scene {
         //let viewModel = ViewModel()
         WindowGroup {
-            ContentView()
+            MenuView()
         }
     }
 }
