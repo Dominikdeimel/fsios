@@ -10,6 +10,7 @@ import PencilKit
 
 struct ContentView: View {
     @Environment(\.undoManager) private var undoManager
+    @Environment(\.presentationMode) private var presentationMode
     private var drawingController = DrawingViewController()
     var viewModel = ViewModel()
     @State private var submitAlert = false
@@ -33,6 +34,8 @@ struct ContentView: View {
                                     .default(Text("Ja")) {
                                         let image = drawingController.saveImg()
                                         viewModel.postData(image)
+                                        
+                                        presentationMode.wrappedValue.dismiss()
                                     },
                             secondaryButton: .cancel()
                         )
