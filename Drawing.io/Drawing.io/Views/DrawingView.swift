@@ -12,14 +12,14 @@ struct ContentView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.presentationMode) private var presentationMode
     private var drawingController = DrawingViewController()
-    var viewModel = ViewModel()
+    @ObservedObject var viewModel = ViewModel()
     @State private var submitAlert = false
     @State private var clearAlert = false
     
     var body: some View {
         VStack {
             HStack {
-                Text("Wort")
+                Text(viewModel.given)
                     .padding(.horizontal)
                 Spacer()
                 Button(action: {

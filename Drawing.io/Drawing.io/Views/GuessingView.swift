@@ -27,10 +27,14 @@ struct GuessingView: View {
             )
                 .focused($fieldIsFocused)
                     .onSubmit {
+                        viewModel.matchWords(word)
                     }
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .border(.secondary)
+            Button("Submit") {
+                viewModel.matchWords(word)
+            }
         }
         .padding()
     }

@@ -14,7 +14,7 @@ class ViewModel: ObservableObject {
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
     @Published var image = UIImage()
-    
+    @Published var given = "Haus"
     
     func loadImage() {
         self.getCancellable?.cancel()
@@ -28,6 +28,7 @@ class ViewModel: ObservableObject {
             
         })
     }
+    
     func postData(_ image: UIImage) {
         self.postCancellable?.cancel()
         self.postCancellable =  model.postImage(image).sink(receiveCompletion: {
@@ -35,6 +36,14 @@ class ViewModel: ObservableObject {
         }, receiveValue: {_ in
             //TODO:
         })
+    }
+    
+    func matchWords(_ guessed: String) {
+        if given.lowercased() == guessed.lowercased() {
+            print("Wort erraten")
+        } else {
+            print("Falsches Wort")
+        }
     }
     
     deinit {
