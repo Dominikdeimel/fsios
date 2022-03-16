@@ -9,34 +9,50 @@ import SwiftUI
 
 struct GuessingView: View {
     @State private var word: String = ""
+    @State var notMatchedAlert = false
+    @State var showScore = false
     @FocusState private var fieldIsFocused: Bool
     @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
-        VStack {
-            Button("Get Image") {
-                viewModel.loadImage()
-            }
-            Image(uiImage: viewModel.image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .border(.gray)
-            TextField(
-                "Wort",
-                text: $word
-            )
-                .focused($fieldIsFocused)
-                    .onSubmit {
-                        viewModel.matchWords(word)
+        NavigationView {
+            VStack {
+                Button("Get Image") {
+                    viewModel.loadImage()
+                }
+                Image(uiImage: viewModel.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .border(.gray)
+                TextField(
+                    "Wort",
+                    text: $word
+                )
+                    .focused($fieldIsFocused)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                        .border(.secondary)
+                NavigationLink(destination:  ScoreView(), isActive: $showScore) {
+                    Text("")
+                }
+                Button("Submit") {
+                    if (viewModel.matchWords(word)) {
+                        showScore = true
+                    } else {
+                        notMatchedAlert = true
+                        word = ""
                     }
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .border(.secondary)
-            Button("Submit") {
-                viewModel.matchWords(word)
+                }
+                .alert(isPresented: $notMatchedAlert) {
+                    Alert(
+                        title: Text("Falsches Wort"),
+                        message: Text("rip du noob"),
+                        dismissButton: .default(Text("Nochmal versuchen"))
+                    )
+                }
             }
-        }
-        .padding()
+            .padding()
+        }.navigationTitle("").navigationBarTitleDisplayMode(.inline)
     }
 }
 
