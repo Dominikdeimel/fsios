@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-struct Model {
+struct NetworkModel {
     
     func getImage() -> AnyPublisher<UserImage, Error> {
         let url = URL(string: "http://localhost:3000/image")!
@@ -24,9 +24,9 @@ struct Model {
         let url = URL(string: "http://localhost:3000/image")!
         
         let imageData = image.jpegData(compressionQuality: 1)
-        let imageBase64String = imageData?.base64EncodedString()
+        let imageBase64 = imageData?.base64EncodedString()
         
-        let userImage = UserImage(userId: randomString(), imageAsBase64: imageBase64String!)
+        let userImage = UserImage(userId: randomString(), imageAsBase64: imageBase64!)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
         var request = URLRequest(url: url)
