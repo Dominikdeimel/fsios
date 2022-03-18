@@ -15,26 +15,23 @@ struct GuessingView: View {
     @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Button("Get Image") {
-                    viewModel.loadImage()
-                }
-                Image(uiImage: viewModel.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .border(.gray)
-                TextField(
-                    "Wort",
-                    text: $word
-                )
-                    .focused($fieldIsFocused)
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
-                        .border(.secondary)
-                NavigationLink(destination:  ScoreView(), isActive: $showScore) {
-                    Text("")
-                }
+        VStack {
+            Button("Get Image") {
+                viewModel.loadImage()
+            }
+            Image(uiImage: viewModel.image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .border(.gray)
+            TextField(
+                "Wort",
+                text: $word
+            )
+                .focused($fieldIsFocused)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
+                .border(.secondary)
+            NavigationLink(destination: ScoreView(), isActive: $showScore) {
                 Button("Submit") {
                     if (viewModel.matchWords(word)) {
                         showScore = true
@@ -43,16 +40,15 @@ struct GuessingView: View {
                         word = ""
                     }
                 }
-                .alert(isPresented: $notMatchedAlert) {
-                    Alert(
-                        title: Text("Falsches Wort"),
-                        message: Text("rip du noob"),
-                        dismissButton: .default(Text("Nochmal versuchen"))
-                    )
-                }
             }
-            .padding()
-        }.navigationTitle("").navigationBarTitleDisplayMode(.inline)
+            .alert(isPresented: $notMatchedAlert) {
+                Alert(
+                    title: Text("Falsches Wort"),
+                    dismissButton: .default(Text("Nochmal versuchen"))
+                )
+            }
+        }
+        .padding()
     }
 }
 
