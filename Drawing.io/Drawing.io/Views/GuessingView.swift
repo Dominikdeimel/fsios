@@ -31,7 +31,7 @@ struct GuessingView: View {
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .border(.secondary)
-            NavigationLink(destination: ScoreView(), isActive: $showScore) {
+            NavigationLink(destination: ScoreView(viewModel: viewModel), isActive: $showScore) {
                 Button("Submit") {
                     if (viewModel.matchWords(word)) {
                         showScore = true

@@ -17,6 +17,7 @@
 		2B95DEB527D2723100DF0613 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95DEB327D2723100DF0613 /* Canvas.swift */; };
 		2B95DEB827D2726500DF0613 /* DrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95DEB727D2726500DF0613 /* DrawingViewController.swift */; };
 		8531DF0827E234A500F107DE /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0727E234A500F107DE /* ScoreView.swift */; };
+		8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0927E74CAF00F107DE /* ConfettiView.swift */; };
 		85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D348EB27D7822300FCDC10 /* GuessingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		2B95DEB327D2723100DF0613 /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		2B95DEB727D2726500DF0613 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
 		8531DF0727E234A500F107DE /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
+		8531DF0927E74CAF00F107DE /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		85D348EB27D7822300FCDC10 /* GuessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 		85D348EF27D7931500FCDC10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8531DF0927E74CAF00F107DE /* ConfettiView.swift */,
 				2B6E9E5727D7696600B97936 /* MenuView.swift */,
 				2B14E69F27CE2BA90048502D /* DrawingView.swift */,
 				85D348EB27D7822300FCDC10 /* GuessingView.swift */,
@@ -182,6 +185,7 @@
 				2B14E69E27CE2BA90048502D /* Drawing_ioApp.swift in Sources */,
 				85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */,
 				2B95DEB527D2723100DF0613 /* Canvas.swift in Sources */,
+				8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */,
 				2B14E6AE27CE2F9C0048502D /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
