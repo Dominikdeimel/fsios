@@ -48,11 +48,11 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func matchWords(_ guessed: String) {
+    func matchWords(_ guessed: String) -> Bool {
         if given.lowercased() == guessed.lowercased() {
-            print("Wort erraten")
+            return true
         } else {
-            print("Falsches Wort")
+            return false
         }
     }
     

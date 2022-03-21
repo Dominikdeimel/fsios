@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GuessingView: View {
     @State private var word: String = ""
+    @State var notMatchedAlert = false
+    @State var showScore = false
     @FocusState private var fieldIsFocused: Bool
     @ObservedObject var viewModel = ViewModel()
     
@@ -26,14 +28,24 @@ struct GuessingView: View {
                 text: $word
             )
                 .focused($fieldIsFocused)
-                    .onSubmit {
-                        viewModel.matchWords(word)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
+                .border(.secondary)
+            NavigationLink(destination: ScoreView(viewModel: viewModel), isActive: $showScore) {
+                Button("Submit") {
+                    if (viewModel.matchWords(word)) {
+                        showScore = true
+                    } else {
+                        notMatchedAlert = true
+                        word = ""
                     }
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .border(.secondary)
-            Button("Submit") {
-                viewModel.matchWords(word)
+                }
+            }
+            .alert(isPresented: $notMatchedAlert) {
+                Alert(
+                    title: Text("Falsches Wort"),
+                    dismissButton: .default(Text("Nochmal versuchen"))
+                )
             }
         }
         .padding()
