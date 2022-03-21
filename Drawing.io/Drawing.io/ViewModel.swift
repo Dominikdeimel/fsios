@@ -8,33 +8,43 @@
 import Foundation
 import SwiftUI
 import Combine
+import CoreData
 
 class ViewModel: ObservableObject {
-    private var model = Model()
+    private var networkModel = NetworkModel()
+    private var databaseModel = DatabaseModel()
+    
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
+    
+    @Environment(\.managedObjectContext) var context
     @Published var image = UIImage()
     @Published var given = "Haus"
+
     
     func loadImage() {
         self.getCancellable?.cancel()
-        self.getCancellable = model.getImage().sink(receiveCompletion: {
+        self.getCancellable = networkModel.getImage().sink(receiveCompletion: {
             err in print(err)
         }, receiveValue: { data in            
             let imageData = Data(base64Encoded: data.imageAsBase64)
             if let imageData = imageData {
                 self.image = UIImage(data: imageData)!
             }
-            
         })
     }
     
+    
     func postData(_ image: UIImage) {
         self.postCancellable?.cancel()
-        self.postCancellable =  model.postImage(image).sink(receiveCompletion: {
+        self.postCancellable =  networkModel.postImage(image).sink(receiveCompletion: {
             err in print(err)
-        }, receiveValue: {_ in
-            //TODO:
+            self.databaseModel.createFailedImagePost(image, self.context)
+        }, receiveValue: {code in
+            if code != 200 {
+                self.databaseModel.createFailedImagePost(image, self.context)
+                print("Error beim posten")
+            }
         })
     }
     
