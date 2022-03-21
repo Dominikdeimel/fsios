@@ -10,7 +10,9 @@ import CoreData
 
 struct SwiftUIView: View {
     @Environment(\.managedObjectContext) var context
+    
     @FetchRequest(sortDescriptors: []) var failedImagePosts: FetchedResults<FailedImagePost>
+    
     var viewModel : ViewModel
     
     var body: some View {

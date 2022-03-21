@@ -3,7 +3,7 @@
 //  Drawing.io
 //
 //  Created by Dominik Deimel on 18.03.22.
-//
+// 
 
 import Foundation
 import UIKit
@@ -16,6 +16,7 @@ struct DatabaseModel {
         let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
         
         let failedImagePost = FailedImagePost(context: context)
+        
         failedImagePost.gameId = randomString()
         failedImagePost.imageAsBase64 = imageAsBase64
         failedImagePost.errorDate = Date()
