@@ -25,10 +25,12 @@ struct NetworkModel {
         
         let imageData = image.jpegData(compressionQuality: 1)
         let imageBase64 = imageData?.base64EncodedString()
-        
-        let userImage = UserImage(userId: randomString(), imageAsBase64: imageBase64!)
+
+        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId!"
+        let userName = UserDefaults.standard.string(forKey: "userName") ?? "Missing userName!"
+        let userImage = UserImage(userId: userId,userName: userName, imageAsBase64: imageBase64!)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -41,19 +43,10 @@ struct NetworkModel {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
-    func randomString() -> String {
-        let chars = "abcdefghijklmnopqrstuvwxyz1234567890"
-        var randomString = ""
-        for _ in 0...10 {
-            randomString += chars.randomElement()!.description
-        }
-        
-        return randomString
-    }
 }
 
 struct UserImage: Codable {
     let userId: String
+    let userName: String
     let imageAsBase64: String
 }

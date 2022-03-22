@@ -10,7 +10,8 @@ import UIKit
 import CoreData
 
 struct DatabaseModel {
-    
+    //@FetchRequest(sortDescriptors: []) var failedImagePosts: FetchedResults<FailedImagePost>
+
     func createFailedImagePost(_ image: UIImage, _ context: NSManagedObjectContext) {
         let imageData = image.jpegData(compressionQuality: 1)
         let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"

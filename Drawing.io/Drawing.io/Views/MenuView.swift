@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct MenuView: View {
+    @Environment(\.managedObjectContext) var context
+    @FetchRequest(sortDescriptors: []) var userData: FetchedResults<FailedImagePost>
+
+    @State private var showLoginScreen = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -31,6 +36,14 @@ struct MenuView: View {
                 }
                 Spacer()
             }.navigationTitle("Drawing.io").navigationBarTitleDisplayMode(.inline)
+                .onAppear {
+                    let userName = UserDefaults.standard.string(forKey: "userName")
+                    if(userName == nil) {
+                        showLoginScreen.toggle()
+                    }
+                }.sheet(isPresented: $showLoginScreen) {
+                    LoginView()
+                }
         }
     }
 }
