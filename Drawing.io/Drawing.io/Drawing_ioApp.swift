@@ -10,12 +10,12 @@ import SwiftUI
 @main
 struct Drawing_ioApp: App {
     @StateObject private var databaseController = DatabaseController()
-    
+    @StateObject var viewModel = ViewModel()
     var body: some Scene {
         WindowGroup {
             MenuView()
             .environment(\.managedObjectContext, databaseController.container.viewContext)
-
+            .environmentObject(viewModel)
         }
     }
 }

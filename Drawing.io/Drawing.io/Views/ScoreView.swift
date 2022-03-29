@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ScoreView: View {
-    @ObservedObject var viewModel: ViewModel
+    @EnvironmentObject var viewModel: ViewModel
     @State var counter: Int = 1
     var body: some View {
         ZStack {

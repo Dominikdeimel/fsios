@@ -51,6 +51,13 @@ struct NetworkModel {
         
         return randomString
     }
+    
+    func randomWord(_ words: [String]) -> String {
+        if let word = words.randomElement() {
+            return word
+        }
+        return "Haus"
+    }
 }
 
 struct UserImage: Codable {
