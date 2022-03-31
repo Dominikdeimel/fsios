@@ -17,6 +17,5 @@ class DatabaseController: ObservableObject {
                 print("CoreData failed to load: \(error.localizedDescription)")
             }
         }
-        print(try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true))
     }
 }
