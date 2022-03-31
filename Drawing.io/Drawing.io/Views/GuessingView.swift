@@ -33,7 +33,7 @@ struct GuessingView: View {
                 .border(.secondary)
             NavigationLink(destination: ScoreView(), isActive: $showScore) {
                 Button("Submit") {
-                    if (viewModel.matchWords(word)) {
+                    if (viewModel.matchWords(word, viewModel.given)) {
                         showScore = true
                     } else {
                         notMatchedAlert = true

@@ -20,13 +20,13 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func postImage(_ image: UIImage) -> AnyPublisher<Int, URLError> {
+    func postInput(_ image: UIImage, _ word: String) -> AnyPublisher<Int, URLError> {
         let url = URL(string: "http://localhost:3000/image")!
         
         let imageData = image.jpegData(compressionQuality: 1)
         let imageBase64 = imageData?.base64EncodedString()
         
-        let userImage = UserImage(userId: randomString(), imageAsBase64: imageBase64!)
+        let userImage = UserImage(userId: randomString(), imageAsBase64: imageBase64!, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
         var request = URLRequest(url: url)
@@ -63,4 +63,5 @@ struct NetworkModel {
 struct UserImage: Codable {
     let userId: String
     let imageAsBase64: String
+    let word: String
 }

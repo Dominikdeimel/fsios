@@ -30,6 +30,8 @@ class ViewModel: ObservableObject {
             if let imageData = imageData {
                 self.image = UIImage(data: imageData)!
             }
+            let wordData = data.word
+            self.given = wordData
         })
     }
     
@@ -39,7 +41,7 @@ class ViewModel: ObservableObject {
     
     func postData(_ image: UIImage) {
         self.postCancellable?.cancel()
-        self.postCancellable =  networkModel.postImage(image).sink(receiveCompletion: {
+        self.postCancellable =  networkModel.postInput(image, given).sink(receiveCompletion: {
             err in print(err)
             self.databaseModel.createFailedImagePost(image, self.context)
         }, receiveValue: {code in
@@ -50,8 +52,8 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func matchWords(_ guessed: String) -> Bool {
-        if given.lowercased() == guessed.lowercased() {
+    func matchWords(_ guessed: String, _ wordData: String) -> Bool {
+        if wordData.lowercased() == guessed.lowercased() {
             return true
         } else {
             return false
