@@ -22,5 +22,10 @@ struct DatabaseModel {
         failedImagePost.errorDate = Date()
         
         try? context.save()
+        
+    }
+    
+    func deleteFailedImagePost(_ failedImagePost: FailedImagePost, _ context: NSManagedObjectContext) {
+        context.delete(failedImagePost)
     }
 }

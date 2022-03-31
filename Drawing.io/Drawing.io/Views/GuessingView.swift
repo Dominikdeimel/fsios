@@ -12,7 +12,7 @@ struct GuessingView: View {
     @State var notMatchedAlert = false
     @State var showScore = false
     @FocusState private var fieldIsFocused: Bool
-    @ObservedObject var viewModel = ViewModel()
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         VStack {
@@ -31,7 +31,7 @@ struct GuessingView: View {
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .border(.secondary)
-            NavigationLink(destination: ScoreView(viewModel: viewModel), isActive: $showScore) {
+            NavigationLink(destination: ScoreView(), isActive: $showScore) {
                 Button("Submit") {
                     if (viewModel.matchWords(word)) {
                         showScore = true

@@ -17,10 +17,13 @@ class ViewModel: ObservableObject {
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
     
-    @Environment(\.managedObjectContext) var context
     @Published var image = UIImage()
     @Published var given = "Haus"
-
+    var context: NSManagedObjectContext
+    
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
     
     func loadImage() {
         self.getCancellable?.cancel()
@@ -38,12 +41,25 @@ class ViewModel: ObservableObject {
     func postData(_ image: UIImage) {
         self.postCancellable?.cancel()
         self.postCancellable =  networkModel.postImage(image).sink(receiveCompletion: {
-            err in print(err)
+            err in
             self.databaseModel.createFailedImagePost(image, self.context)
         }, receiveValue: {code in
             if code != 200 {
                 self.databaseModel.createFailedImagePost(image, self.context)
-                print("Error beim posten")
+                print("Error while posting")
+            }
+        })
+    }
+    
+    func retryPostData(_ failedImagePost: FailedImagePost){
+        self.postCancellable?.cancel()
+        let imageAsBase64 = failedImagePost.imageAsBase64 ?? "Missing image data"
+        let gameId = failedImagePost.gameId ?? "Missing gameId"
+        
+        self.postCancellable = networkModel.retryPostImage(imageAsBase64, gameId).sink(receiveCompletion: { _ in
+        }, receiveValue: {statuscode in
+            if statuscode == 200 {
+                self.databaseModel.deleteFailedImagePost(failedImagePost, self.context)
             }
         })
     }
