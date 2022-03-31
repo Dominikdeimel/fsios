@@ -66,41 +66,6 @@ struct MenuView: View {
     }
 }
 
-struct FailedRequestsView: View {
-    @FetchRequest(sortDescriptors: []) var failedImagePosts: FetchedResults<FailedImagePost>
-    @EnvironmentObject var viewModel: ViewModel
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            Text("Fehlerhafte Bildübertragungen").font(.title)
-            Spacer()
-            List(failedImagePosts){ failedImagePost in
-                FailedRequestsRow(failedImagePost: failedImagePost)
-            }
-        }
-    }
-}
-
-struct FailedRequestsRow: View {
-    @EnvironmentObject var viewModel: ViewModel
-    var failedImagePost: FailedImagePost
-    
-    var body: some View {
-        HStack {
-            Text("Fehlerhafte Übertragung von " + (failedImagePost.errorDate?.formatted() ?? "No Date available"))
-            Spacer()
-            Button(action: {
-                withAnimation {
-                    viewModel.retryPostData(failedImagePost)
-                }
-            }, label: {
-                Image(systemName: "icloud.and.arrow.up")
-            })
-        }
-    }
-}
-
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         FailedRequestsView()
