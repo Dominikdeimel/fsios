@@ -42,6 +42,7 @@ struct NetworkModel {
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+        
     }
     
     func retryPostImage(_ imageAsBase64: String, _ gameId: String) -> AnyPublisher<Int, URLError> {

@@ -42,7 +42,12 @@ class ViewModel: ObservableObject {
         self.postCancellable?.cancel()
         self.postCancellable =  networkModel.postImage(image).sink(receiveCompletion: {
             err in
-            self.databaseModel.createFailedImagePost(image, self.context)
+            switch err {
+            case .finished:
+                break
+            case .failure(_):
+                self.databaseModel.createFailedImagePost(image, self.context)
+            }
         }, receiveValue: {code in
             if code != 200 {
                 self.databaseModel.createFailedImagePost(image, self.context)
