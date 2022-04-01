@@ -16,7 +16,7 @@ app.get('/image', async (req, res) => {
         if(files.length > 0){
             const random = Math.floor(Math.random() * files.length)
             await fs.readFile(`data/${files[random]}`, ((err, data) => {
-                let result = JSON.parse(data.toString())
+                let result = JSON.parse(data)
                 res.status(200)
                 res.send(result)
             }))
@@ -25,6 +25,14 @@ app.get('/image', async (req, res) => {
             res.send("No images found!")
         }
     })
+})
+
+app.get('/word', async (req, res) => {
+    await fs.readFile('words.json', ((err, wordList) => {
+        let result = JSON.parse(wordList.toString())
+        res.status(200)
+        res.send(result[Math.floor(Math.random() * result.length)].toString())
+    }))
 })
 
 app.post('/image', async (req, res) => {
