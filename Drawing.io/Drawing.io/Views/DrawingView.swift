@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.presentationMode) private var presentationMode
     private var drawingController = DrawingViewController()
-    @ObservedObject var viewModel = ViewModel()
+    @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
     
