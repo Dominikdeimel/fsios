@@ -16,7 +16,6 @@ class ViewModel: ObservableObject {
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
-    private var words = ["Hund", "Haus", "Blume", "Hand", "Schnecke", "Elefant", "Fahrrad", "Schaf", "Kirche", "Stern"]
     @Published var image = UIImage()
     @Published var given: String = "Haus"
     @Environment(\.managedObjectContext) var context
@@ -36,7 +35,10 @@ class ViewModel: ObservableObject {
     }
     
     func loadWord() {
-        given = networkModel.randomWord(words)
+        self.getCancellable?.cancel()
+        self.getCancellable = networkModel.getRandomWord().sink(receiveValue: { word in
+            self.given = word ?? "Haus"
+        })
     }
     
     func postData(_ image: UIImage) {

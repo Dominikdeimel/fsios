@@ -20,6 +20,15 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
+    func getRandomWord() -> AnyPublisher<String?, Never> {
+        let url = URL(string: "http://localhost:3000/word")!
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .map { String(data: $0.data, encoding: .utf8) }
+            .replaceError(with: nil)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
     func postInput(_ image: UIImage, _ word: String) -> AnyPublisher<Int, URLError> {
         let url = URL(string: "http://localhost:3000/image")!
         
@@ -52,12 +61,6 @@ struct NetworkModel {
         return randomString
     }
     
-    func randomWord(_ words: [String]) -> String {
-        if let word = words.randomElement() {
-            return word
-        }
-        return "Haus"
-    }
 }
 
 struct UserImage: Codable {
