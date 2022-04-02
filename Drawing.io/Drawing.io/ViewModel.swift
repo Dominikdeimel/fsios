@@ -16,7 +16,7 @@ class ViewModel: ObservableObject {
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
-    
+
     @Published var image = UIImage()
     @Published var given = "Haus"
     var context: NSManagedObjectContext
@@ -34,13 +34,21 @@ class ViewModel: ObservableObject {
             if let imageData = imageData {
                 self.image = UIImage(data: imageData)!
             }
+            let wordData = data.word
+            self.given = wordData
         })
     }
     
+    func loadWord() {
+        self.getCancellable?.cancel()
+        self.getCancellable = networkModel.getRandomWord().sink(receiveValue: { word in
+            self.given = word ?? "Haus"
+        })
+    }
     
     func postData(_ image: UIImage) {
         self.postCancellable?.cancel()
-        self.postCancellable =  networkModel.postImage(image).sink(receiveCompletion: {
+        self.postCancellable =  networkModel.postInput(image, given).sink(receiveCompletion: {
             err in
             switch err {
             case .finished:
@@ -69,8 +77,8 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func matchWords(_ guessed: String) -> Bool {
-        if given.lowercased() == guessed.lowercased() {
+    func matchWords(_ guessed: String, _ wordData: String) -> Bool {
+        if wordData.lowercased() == guessed.lowercased() {
             return true
         } else {
             return false

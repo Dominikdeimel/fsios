@@ -76,6 +76,8 @@ struct ContentView: View {
             Canvas(vc: drawingController).onAppear {
                 drawingController.clear()
             }
+        }.onAppear {
+            viewModel.loadWord()
         }
     }
 }

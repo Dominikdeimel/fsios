@@ -20,14 +20,23 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func postImage(_ image: UIImage) -> AnyPublisher<Int, URLError> {
+    func getRandomWord() -> AnyPublisher<String?, Never> {
+        let url = URL(string: "http://localhost:3000/word")!
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .map { String(data: $0.data, encoding: .utf8) }
+            .replaceError(with: nil)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func postInput(_ image: UIImage, _ word: String) -> AnyPublisher<Int, URLError> {
         let url = URL(string: "http://localhost:3000/image")!
         let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
         let userName = UserDefaults.standard.string(forKey: "userName") ?? "Missing userName"
         
         let imageData = image.jpegData(compressionQuality: 1)
         let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
-        
+       
         let userImage = UserImage(userId: userId, gameId: randomString(), userName: userName, imageAsBase64: imageAsBase64)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
@@ -66,6 +75,7 @@ struct NetworkModel {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
 }
 
 struct UserImage: Codable {
@@ -73,4 +83,5 @@ struct UserImage: Codable {
     let gameId: String
     let userName: String
     let imageAsBase64: String
+    let word: String
 }

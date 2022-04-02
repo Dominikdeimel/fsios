@@ -27,15 +27,24 @@ app.get('/image', async (req, res) => {
     })
 })
 
+app.get('/word', async (req, res) => {
+    await fs.readFile('words.json', ((err, wordList) => {
+        let result = JSON.parse(wordList.toString())
+        res.status(200)
+        res.send(result[Math.floor(Math.random() * result.length)].toString())
+    }))
+})
+
 app.post('/image', async (req, res) => {
     try {
         const userId = req.body.userId
+        const word = req.body.word
 
         const data = req.body
         const jsonString = JSON.stringify(data)
         await fs.writeFile(`data/${userId}.json`, jsonString, () =>{
                 res.status(200)
-                res.send("Image from user " + userId + " saved successfully under data/" + userId )
+                res.send("Image " + word + " from user " + userId + " saved successfully under data/" + userId )
         })
     } catch (e) {
         res.status(500)
