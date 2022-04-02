@@ -16,7 +16,7 @@ app.get('/image', async (req, res) => {
         if(files.length > 0){
             const random = Math.floor(Math.random() * files.length)
             await fs.readFile(`data/${files[random]}`, ((err, data) => {
-                let result = JSON.parse(data)
+                let result = JSON.parse(data.toString())
                 res.status(200)
                 res.send(result)
             }))
