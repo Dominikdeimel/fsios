@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require("fs");
@@ -29,7 +30,7 @@ app.get('/image', async (req, res) => {
 
 app.get('/word', async (req, res) => {
     await fs.readFile('words.json', ((err, wordList) => {
-        let result = JSON.parse(wordList.toString())
+        const result = JSON.parse(wordList.toString())
         res.status(200)
         res.send(result[Math.floor(Math.random() * result.length)].toString())
     }))
@@ -52,12 +53,38 @@ app.post('/image', async (req, res) => {
     }
 })
 
-app.listen(port, () => {
+app.post('/id', async (req, res) => {
+    const userName = req.body.name
+    const userId = uuidv4()
+
+    await fs.readFile('users.json', (async (err, usersBuffer) => {
+        const users = [...JSON.parse(usersBuffer.toString()), {
+            name: userName,
+            id: userId
+        }]
+        await fs.writeFile(`users.json`, JSON.stringify(users), () =>{
+            res.status(200)
+            res.send(userId)
+        })
+    }))
+})
+
+app.listen(port, async () => {
     try {
         let dir = fs.opendirSync("data")
         dir.closeSync()
     } catch {
         fs.mkdirSync('data')
+    }
+
+    try{
+        fs.readFileSync('users.json')
+    } catch {
+        const users = []
+        const json = JSON.stringify(users)
+        await fs.writeFile(`users.json`, json, () =>{
+            console.log("users.json created")
+        })
     }
 
     console.log(`Example app listening on port ${port}`)
