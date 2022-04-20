@@ -37,7 +37,7 @@ struct NetworkModel {
         let imageData = image.jpegData(compressionQuality: 1)
         let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
        
-        let userImage = UserImage(userId: userId, gameId: randomString(), userName: userName, imageAsBase64: imageAsBase64, word: word)
+        let userImage = UserImage(userId: userId, gameId: "", userName: userName, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
         var request = URLRequest(url: url)
@@ -74,6 +74,7 @@ struct NetworkModel {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
     
     
     func generateUserId(_ name: String) -> AnyPublisher<String?, Never> {

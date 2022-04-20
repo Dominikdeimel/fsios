@@ -40,13 +40,30 @@ app.post('/image', async (req, res) => {
     try {
         const userId = req.body.userId
         const word = req.body.word
+        const image = req.body.imageAsBase64
+        const current_gameId = req.body.gameId
 
-        const data = req.body
-        const jsonString = JSON.stringify(data)
-        await fs.writeFile(`data/${userId}.json`, jsonString, () =>{
+        if(current_gameId === ""){
+            const gameId = uuidv4()
+            const gameData = {
+                gameId: gameId,
+                userId_0: userId,
+                userId_1: "",
+                activeUser: "",
+                state: 0,
+                rounds: 0,
+                score: 0,
+                word: word,
+                image: image
+            }
+            const jsonString = JSON.stringify(gameData)
+            await fs.writeFile(`data/${gameId}.json`, jsonString, () =>{
                 res.status(200)
-                res.send("Image " + word + " from user " + userId + " saved successfully under data/" + userId )
-        })
+                res.send("Image " + word + " from user " + userId + " saved successfully under data/" + gameId )
+            })
+        } else {
+            //Todo falls game schon besteht
+        }
     } catch (e) {
         res.status(500)
         res.send(e)
