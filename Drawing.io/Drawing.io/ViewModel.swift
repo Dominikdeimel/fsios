@@ -81,7 +81,7 @@ class ViewModel: ObservableObject {
         self.postCancellable?.cancel()
         self.postCancellable = networkModel.generateUserId(name).sink(receiveValue: { id in
             UserDefaults.standard.set(id, forKey: "userId")
-        }) 
+        })
     }
     
     func matchWords(_ guessed: String, _ wordData: String) -> Bool {
