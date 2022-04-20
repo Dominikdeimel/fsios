@@ -69,12 +69,19 @@ class ViewModel: ObservableObject {
         let imageAsBase64 = failedImagePost.imageAsBase64 ?? "Missing image data"
         let gameId = failedImagePost.gameId ?? "Missing gameId"
         
-        self.postCancellable = networkModel.retryPostImage(imageAsBase64, gameId).sink(receiveCompletion: { _ in
+        self.postCancellable = networkModel.retryPostImage(imageAsBase64, gameId, given).sink(receiveCompletion: { _ in
         }, receiveValue: {statuscode in
             if statuscode == 200 {
                 self.databaseModel.deleteFailedImagePost(failedImagePost, self.context)
             }
         })
+    }
+    
+    func generateUserId(_ name: String){
+        self.postCancellable?.cancel()
+        self.postCancellable = networkModel.generateUserId(name).sink(receiveValue: { id in
+            UserDefaults.standard.set(id, forKey: "userId")
+        }) 
     }
     
     func matchWords(_ guessed: String, _ wordData: String) -> Bool {
