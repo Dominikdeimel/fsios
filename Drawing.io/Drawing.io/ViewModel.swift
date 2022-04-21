@@ -46,7 +46,7 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func postData(_ image: UIImage) {
+    func postData(_ image: UIImage, _ gameId: String = "") {
         self.postCancellable?.cancel()
         self.postCancellable =  networkModel.postInput(image, given).sink(receiveCompletion: {
             err in
@@ -54,11 +54,11 @@ class ViewModel: ObservableObject {
             case .finished:
                 break
             case .failure(_):
-                self.databaseModel.createFailedImagePost(image, self.context)
+                self.databaseModel.createFailedImagePost(image, gameId, self.context)
             }
         }, receiveValue: {code in
             if code != 200 {
-                self.databaseModel.createFailedImagePost(image, self.context)
+                //self.databaseModel.createFailedImagePost(image, gameId, self.context)
                 print("Error while posting")
             }
         })
