@@ -8,7 +8,7 @@
 import SwiftUI
 import PencilKit
 
-struct ContentView: View {
+struct DrawingView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.presentationMode) private var presentationMode
     private var drawingController = DrawingViewController()
@@ -84,6 +84,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        DrawingView()
     }
 }
