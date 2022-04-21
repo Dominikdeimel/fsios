@@ -36,6 +36,30 @@ app.get('/word', async (req, res) => {
     }))
 })
 
+app.get('/game/initial', async (req, res) => {
+    try {
+        const userId = req.query.userId
+        let dir = await fs.promises.readdir('data')
+        for (const file of dir) {
+            let game = await fs.promises.readFile(`data/${file}`)
+            const parsedGame = JSON.parse(game.toString())
+            if (parsedGame.userId_1 === "") {
+                parsedGame.userId_1 = userId
+                parsedGame.activeUser = userId
+                parsedGame.state = 2
+                fs.writeFileSync(`data/${parsedGame.gameId}.json`, JSON.stringify(parsedGame))
+                res.status(200)
+                res.send(parsedGame)
+                break
+            }
+        }
+        // todo abcatchen file da
+    } catch (e) {
+        res.status(500)
+        res.send(e)
+    }
+})
+
 app.post('/image', async (req, res) => {
     try {
         const userId = req.body.userId
