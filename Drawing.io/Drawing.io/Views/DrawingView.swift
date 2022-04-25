@@ -8,10 +8,10 @@
 import SwiftUI
 import PencilKit
 
-struct ContentView: View {
+struct DrawingView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.presentationMode) private var presentationMode
-    private var drawingController = DrawingViewController()
+    @State var drawingController = DrawingViewController()
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
@@ -73,9 +73,7 @@ struct ContentView: View {
                 })
                     .padding(.horizontal)
             }
-            Canvas(vc: drawingController).onAppear {
-                drawingController.clear()
-            }
+            Canvas(vc: drawingController)
         }.onAppear {
             viewModel.loadWord()
         }
@@ -84,6 +82,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        DrawingView()
     }
 }

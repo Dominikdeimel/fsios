@@ -34,7 +34,7 @@ struct MenuView: View {
                     }
                 }
                 Spacer()
-                NavigationLink(destination: ContentView()) {
+                NavigationLink(destination: DrawingView()) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundColor(.cyan)
