@@ -43,7 +43,7 @@ app.get('/game/initial', async (req, res) => {
         for (const file of dir) {
             let game = await fs.promises.readFile(`data/${file}`)
             const parsedGame = JSON.parse(game.toString())
-            if (parsedGame.userId_1 === "") {
+            if (parsedGame.userId_1 === "" && parsedGame.userId_0 !== userId) {
                 parsedGame.userId_1 = userId
                 parsedGame.activeUser = userId
                 parsedGame.state = 2
