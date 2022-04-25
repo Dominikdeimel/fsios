@@ -79,9 +79,9 @@ struct DrawingView: View {
         }
     }
 }
-//
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DrawingView()
-//    }
-//}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        DrawingView()
+    }
+}
