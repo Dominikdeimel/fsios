@@ -11,7 +11,7 @@ import PencilKit
 struct DrawingView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.presentationMode) private var presentationMode
-    private var drawingController = DrawingViewController()
+    @State var drawingController = DrawingViewController()
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
@@ -73,17 +73,15 @@ struct DrawingView: View {
                 })
                     .padding(.horizontal)
             }
-            Canvas(vc: drawingController).onAppear {
-                drawingController.clear()
-            }
+            Canvas(vc: drawingController)
         }.onAppear {
             viewModel.loadWord()
         }
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        DrawingView()
-    }
-}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DrawingView()
+//    }
+//}

@@ -48,6 +48,7 @@ class DrawingViewController: UIViewController, PKCanvasViewDelegate, PKToolPicke
         updateLayout(for: toolPicker)
         canvasView.becomeFirstResponder()
         
+        canvasView.drawing = PKDrawing()
     }
     
     /// When the view is resized, adjust the canvas scale so that it is zoomed to the default `canvasWidth`.
