@@ -13,6 +13,8 @@ import CoreData
 class ViewModel: ObservableObject {
     private var networkModel = NetworkModel()
     private var databaseModel = DatabaseModel()
+    private let constants = Constants()
+    private let errorMessages = ErrorMessages()
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
@@ -43,7 +45,7 @@ class ViewModel: ObservableObject {
     func loadWord() {
         self.getCancellable?.cancel()
         self.getCancellable = networkModel.getRandomWord().sink(receiveValue: { word in
-            self.given = word ?? "Haus"
+            self.given = word ?? self.constants.defaultGiven
         })
     }
     
@@ -59,16 +61,16 @@ class ViewModel: ObservableObject {
             }
         }, receiveValue: {code in
             if code != 200 {
-                //self.databaseModel.createFailedImagePost(image, gameId, self.context)
-                print("Error while posting")
+                self.databaseModel.createFailedImagePost(image, gameId, self.context)
+                print(self.errorMessages.postingError)
             }
         })
     }
     
     func retryPostData(_ failedImagePost: FailedImagePost){
         self.postCancellable?.cancel()
-        let imageAsBase64 = failedImagePost.imageAsBase64 ?? "Missing image data"
-        let gameId = failedImagePost.gameId ?? "Missing gameId"
+        let imageAsBase64 = failedImagePost.imageAsBase64 ?? errorMessages.missingImageData
+        let gameId = failedImagePost.gameId ?? errorMessages.missingGameId
         
         self.postCancellable = networkModel.retryPostImage(imageAsBase64, gameId, given).sink(receiveCompletion: { _ in
         }, receiveValue: {statuscode in
@@ -98,5 +100,14 @@ class ViewModel: ObservableObject {
         self.postCancellable?.cancel()
     }
     
-    struct Constants
+    struct Constants {
+        let emptyString = ""
+        let defaultGiven = "Haus"
+    }
+    
+    struct ErrorMessages {
+        let postingError = "Error while posting"
+        let missingImageData = "Missing imagedata"
+        let missingGameId = "Missing gameId"
+    }
 }
