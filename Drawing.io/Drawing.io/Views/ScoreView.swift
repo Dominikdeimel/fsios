@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ScoreView: View {
+    let roundScore: Int
     @EnvironmentObject var viewModel: ViewModel
     @State var counter: Int = 1
     var body: some View {
@@ -32,6 +33,8 @@ struct ScoreView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 counter += 1
             }
+            
+            
         }
     }
 }

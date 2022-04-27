@@ -11,14 +11,12 @@ struct GuessingView: View {
     @State private var word: String = ""
     @State var notMatchedAlert = false
     @State var showScore = false
+    @State var roundScore = 5
     @FocusState private var fieldIsFocused: Bool
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         VStack {
-            Button("Get Image") {
-                viewModel.loadImage()
-            }
             Image(uiImage: viewModel.image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -31,11 +29,14 @@ struct GuessingView: View {
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .border(.secondary)
-            NavigationLink(destination: ScoreView(), isActive: $showScore) {
+            NavigationLink(destination: ScoreView(roundScore: roundScore), isActive: $showScore) {
                 Button("Submit") {
                     if (viewModel.matchWords(word, viewModel.given)) {
                         showScore = true
                     } else {
+                        if(roundScore > 1){
+                            roundScore -= 1
+                        }
                         notMatchedAlert = true
                         word = ""
                     }
@@ -49,6 +50,9 @@ struct GuessingView: View {
             }
         }
         .padding()
+        .onAppear {
+            viewModel.loadNewGame()
+        }
     }
 }
 

@@ -16,26 +16,27 @@ class ViewModel: ObservableObject {
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
-
+    private var currentGame: Game?
+    
     @Published var image = UIImage()
-    @Published var given = "Haus"
+    @Published var given = ""
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
         self.context = context
     }
     
-    func loadImage() {
+    func loadNewGame() {
         self.getCancellable?.cancel()
-        self.getCancellable = networkModel.getImage().sink(receiveCompletion: {
+        self.getCancellable = networkModel.getNewGame().sink(receiveCompletion: {
             err in print(err)
-        }, receiveValue: { data in            
-            let imageData = Data(base64Encoded: data.imageAsBase64)
+        }, receiveValue: { game in
+            let imageData = Data(base64Encoded: game.image)
             if let imageData = imageData {
                 self.image = UIImage(data: imageData)!
             }
-            let wordData = data.word
-            self.given = wordData
+            self.currentGame = game
+            self.given = game.word
         })
     }
     
@@ -96,4 +97,6 @@ class ViewModel: ObservableObject {
         self.getCancellable?.cancel()
         self.postCancellable?.cancel()
     }
+    
+    struct Constants
 }

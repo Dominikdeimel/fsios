@@ -11,11 +11,21 @@ import Combine
 
 struct NetworkModel {
     
-    func getImage() -> AnyPublisher<UserImage, Error> {
-        let url = URL(string: "http://localhost:3000/image")!
-        return URLSession.shared.dataTaskPublisher(for: url)
-            .map { $0.data }
-            .decode(type: UserImage.self, decoder: JSONDecoder())
+    func getNewGame() -> AnyPublisher<Game, Error> {
+        var url = URLComponents(string: "http://localhost:3000/game/initial")!
+        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
+
+        url.queryItems = [
+            URLQueryItem(name: "userId", value: userId)
+        ]
+        
+        let request = URLRequest(url: url.url!)
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .map {
+                print($0.data)
+                return $0.data
+            }
+            .decode(type: Game.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -75,6 +85,10 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
+    //func finishRound(roundScore: Int, gameId: String) -> AnyPublisher<Int, URLError> {
+        
+    //}
+    
     
     
     func generateUserId(_ name: String) -> AnyPublisher<String?, Never> {
@@ -106,4 +120,16 @@ struct UserImage: Codable {
 
 struct UsersName: Codable {
     let name: String
+}
+
+struct Game: Codable {
+    let gameId: String
+    let userId_0: String
+    let userId_1: String
+    let activeUser: String
+    let state: Int
+    let rounds: Int
+    let score: Int
+    let word: String
+    let image: String
 }
