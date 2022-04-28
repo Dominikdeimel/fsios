@@ -110,6 +110,27 @@ app.post('/id', async (req, res) => {
     }))
 })
 
+app.post('/game/finishround', async (req, res) => {
+    try {
+        const roundScore = req.body.roundScore
+        const gameId = req.body.gameId
+        let game = await fs.promises.readFile(`data/${gameId}.json`)
+        const parsedGame = JSON.parse(game.toString())
+        parsedGame.activeUser = (parsedGame.activeUser == parsedGame.userId_0) ? parsedGame.userId_1 : parsedGame.userId_0
+        parsedGame.state = 1
+        parsedGame.rounds += 1
+        parsedGame.score += roundScore
+        parsedGame.word = ""
+        parsedGame.image = ""
+        fs.writeFileSync(`data/${gameId}.json`, JSON.stringify(parsedGame))
+        res.status(200)
+        res.send(parsedGame.score.toString())
+    } catch (e) {
+        res.status(500)
+        res.send(`Runde beenden hat nicht geklappt (${e})`)
+    }
+})
+
 app.listen(port, async () => {
     try {
         let dir = fs.opendirSync("data")

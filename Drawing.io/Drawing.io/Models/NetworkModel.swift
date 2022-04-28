@@ -85,11 +85,23 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    //func finishRound(roundScore: Int, gameId: String) -> AnyPublisher<Int, URLError> {
+    func postRoundInformation(roundScore: Int, gameId: String) -> AnyPublisher<String, URLError> {
+        let url = URL(string: "http://localhost:3000/game/finishround")!
+        let roundInformation = RoundInformation(gameId: gameId, roundScore: roundScore)
+        let encodedRoundInformation = try! JSONEncoder().encode(roundInformation)
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = encodedRoundInformation
         
-    //}
-    
-    
+        return URLSession.shared.dataTaskPublisher(for: request)
+            . map { print($0.response
+            )
+                return String(data: $0.data, encoding: .utf8)! }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
     
     func generateUserId(_ name: String) -> AnyPublisher<String?, Never> {
         let url = URL(string: "http://localhost:3000/id")!
@@ -108,6 +120,11 @@ struct NetworkModel {
             .replaceError(with: nil)
             .eraseToAnyPublisher()
     }
+}
+
+struct RoundInformation : Codable {
+    let gameId: String
+    let roundScore: Int
 }
 
 struct UserImage: Codable {

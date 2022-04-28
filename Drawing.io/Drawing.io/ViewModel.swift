@@ -20,6 +20,7 @@ class ViewModel: ObservableObject {
     
     @Published var image = UIImage()
     @Published var given = ""
+    @Published var score = ""
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -93,10 +94,17 @@ class ViewModel: ObservableObject {
         }
     }
     
+    func finishRound(_ roundScore: Int){
+        self.postCancellable?.cancel()
+        self.postCancellable = networkModel.postRoundInformation(roundScore: roundScore, gameId: currentGame!.gameId).sink(receiveCompletion: { err in
+            print(err)
+        }, receiveValue: {totalScore in
+            self.score = totalScore
+        })
+    }
+    
     deinit {
         self.getCancellable?.cancel()
         self.postCancellable?.cancel()
     }
-    
-    struct Constants
 }

@@ -19,8 +19,8 @@ struct ScoreView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .border(.gray)
-                Text("Score: x")
-                Text("Gesamtscore: y")
+                Text("Score: " + String(self.roundScore))
+                Text("Gesamtscore: " + viewModel.score)
                 ConfettiCannon(counter: $counter)
             }
             .padding()
@@ -33,8 +33,7 @@ struct ScoreView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 counter += 1
             }
-            
-            
+            viewModel.finishRound(self.roundScore)
         }
     }
 }
