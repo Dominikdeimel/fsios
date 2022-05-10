@@ -96,9 +96,7 @@ struct NetworkModel {
         request.httpBody = encodedRoundInformation
         
         return URLSession.shared.dataTaskPublisher(for: request)
-            . map { print($0.response
-            )
-                return String(data: $0.data, encoding: .utf8)! }
+            . map { String(data: $0.data, encoding: .utf8)! }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }

@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ScoreView: View {
     let roundScore: Int
+    
     @EnvironmentObject var viewModel: ViewModel
     @State var counter: Int = 1
+    
     var body: some View {
         ZStack {
             VStack {
@@ -24,8 +26,9 @@ struct ScoreView: View {
                 ConfettiCannon(counter: $counter)
             }
             .padding()
-            .onTapGesture(){
+            .onTapGesture {
                 counter += 1
+                //viewModel.changeScore()
             }
             ConfettiCannon(counter: $counter)
         }
@@ -33,7 +36,7 @@ struct ScoreView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 counter += 1
             }
-            viewModel.finishRound(self.roundScore)
+            //viewModel.finishRound(self.roundScore)
         }
     }
 }

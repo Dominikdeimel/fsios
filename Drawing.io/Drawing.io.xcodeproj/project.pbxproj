@@ -22,7 +22,6 @@
 		2BD3837A27F479B000249E0C /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837927F479B000249E0C /* Util.swift */; };
 		2BD3837C27F479F200249E0C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837B27F479F200249E0C /* LoginView.swift */; };
 		2BD3837E27F5B25300249E0C /* FailedRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837D27F5B25300249E0C /* FailedRequestsView.swift */; };
-		8531DF0827E234A500F107DE /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0727E234A500F107DE /* ScoreView.swift */; };
 		8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0927E74CAF00F107DE /* ConfettiView.swift */; };
 		85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D348EB27D7822300FCDC10 /* GuessingView.swift */; };
 /* End PBXBuildFile section */
@@ -44,7 +43,6 @@
 		2BD3837927F479B000249E0C /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		2BD3837B27F479F200249E0C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		2BD3837D27F5B25300249E0C /* FailedRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedRequestsView.swift; sourceTree = "<group>"; };
-		8531DF0727E234A500F107DE /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		8531DF0927E74CAF00F107DE /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		85D348EB27D7822300FCDC10 /* GuessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,7 +133,6 @@
 				8531DF0927E74CAF00F107DE /* ConfettiView.swift */,
 				2B14E69F27CE2BA90048502D /* DrawingView.swift */,
 				85D348EB27D7822300FCDC10 /* GuessingView.swift */,
-				8531DF0727E234A500F107DE /* ScoreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -224,7 +221,6 @@
 				2BC7F06427E489A60028873F /* DatabaseController.swift in Sources */,
 				2B14E6A027CE2BA90048502D /* DrawingView.swift in Sources */,
 				2BD3837E27F5B25300249E0C /* FailedRequestsView.swift in Sources */,
-				8531DF0827E234A500F107DE /* ScoreView.swift in Sources */,
 				2B95DEB827D2726500DF0613 /* DrawingViewController.swift in Sources */,
 				2B14E6AC27CE2F900048502D /* ViewModel.swift in Sources */,
 				2BD3837A27F479B000249E0C /* Util.swift in Sources */,

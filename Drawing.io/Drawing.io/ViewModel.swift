@@ -26,7 +26,6 @@ class ViewModel: ObservableObject {
     init(context: NSManagedObjectContext) {
         self.context = context
     }
-    
     func loadNewGame() {
         self.getCancellable?.cancel()
         self.getCancellable = networkModel.getNewGame().sink(receiveCompletion: {
@@ -98,7 +97,7 @@ class ViewModel: ObservableObject {
         self.postCancellable?.cancel()
         self.postCancellable = networkModel.postRoundInformation(roundScore: roundScore, gameId: currentGame!.gameId).sink(receiveCompletion: { err in
             print(err)
-        }, receiveValue: {totalScore in
+        }, receiveValue: { totalScore in
             self.score = totalScore
         })
     }
