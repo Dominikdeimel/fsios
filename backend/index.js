@@ -60,6 +60,28 @@ app.get('/game/initial', async (req, res) => {
     }
 })
 
+app.get("/game/all", async (req, res) => {
+    try {
+        const userId = req.query.userId
+        console.log(userId)
+        const response = []
+
+        let dir = await fs.promises.readdir('data')
+        for (const file of dir) {
+            let game = await fs.promises.readFile(`data/${file}`)
+            const parsedGame = JSON.parse(game.toString())
+            if(parsedGame.userId_0 === userId || parsedGame.userId_1 === userId){
+                response.push(parsedGame)
+            }
+        }
+        res.status(200)
+        res.send(response)
+    } catch (e) {
+        res.status(500)
+        res.send(e)
+    }
+})
+
 app.post('/image', async (req, res) => {
     try {
         const userId = req.body.userId
