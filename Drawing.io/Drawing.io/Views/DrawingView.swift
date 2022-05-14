@@ -15,6 +15,7 @@ struct DrawingView: View {
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
+    let gameId: String?
     
     var body: some View {
         VStack {
@@ -33,7 +34,11 @@ struct DrawingView: View {
                             primaryButton:
                                     .default(Text("Ja")) {
                                         let image = drawingController.saveImg()
-                                        viewModel.postData(image)
+                                        if(gameId == nil){
+                                            viewModel.postData(image)
+                                        } else {
+                                            viewModel.postData(image, gameId)
+                                        }
                                         
                                         presentationMode.wrappedValue.dismiss()
                                     },
@@ -82,6 +87,6 @@ struct DrawingView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        DrawingView()
+        DrawingView(gameId: nil)
     }
 }

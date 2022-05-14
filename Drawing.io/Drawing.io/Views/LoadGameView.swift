@@ -10,20 +10,30 @@ import SwiftUI
 struct LoadGameView: View {
     
     @EnvironmentObject var viewModel: ViewModel
-
-    private var games = [
-        Game(gameId: "123", userId_0: "123", userName_0: "anja", userId_1: "234", userName_1: "dominik", activeUser: "123", state: 2, rounds: 5, score: 10, word: "Haus", image: "none"),
-        Game(gameId: "1345", userId_0: "123", userName_0: "anja", userId_1: "234", userName_1: "alex", activeUser: "123", state: 1, rounds: 4, score: 10, word: "Haus", image: "none"),
-        Game(gameId: "432", userId_0: "123", userName_0: "anja", userId_1: "234", userName_1: "sandy", activeUser: "123", state: 2, rounds: 6, score: 10, word: "Haus", image: "none"),
-    ]
     
     var body: some View {
         let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId!"
-        return List(games) { game in
-            content(userId: userId, game: game)
+        
+        return List(viewModel.games, id: \.gameId) { game in
+            if(userId == game.activeUser){
+                if(game.state == 1){
+                    NavigationLink(destination: DrawingView(gameId: game.gameId)) {
+                        content(userId: userId, game: game)
+                    }
+                } else if(game.state == 2){
+                    NavigationLink(destination: GuessingView()) {
+                        content(userId: userId, game: game)
+                    }
+                }
+            } else {
+                content(userId: userId, game: game)
+            }
+        }.onAppear {
+            viewModel.getAllGamesByUserId()
         }
     }
-    
+            
+        
     func content(userId: String, game: Game) -> some View {
         let otherPlayer: String
         if(userId == game.userId_0) {
@@ -40,8 +50,10 @@ struct LoadGameView: View {
             else if(game.state == 1) {
                 Text("\(otherPlayer) zeichnet gerade!").font(.caption)
             }
-            else {
+            else if(game.state == 2) {
                 Text("\(otherPlayer) rät gerade!").font(.caption)
+            } else {
+                Text("Warten auf Mitspieler...").font(.caption)
             }
         }
     }

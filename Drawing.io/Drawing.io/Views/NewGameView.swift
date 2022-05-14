@@ -17,7 +17,7 @@ struct NewGameView: View {
     var body: some View {
             VStack {
                 Spacer()
-                NavigationLink(destination: DrawingView()) {
+                NavigationLink(destination: DrawingView(gameId: nil)) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundColor(.cyan)

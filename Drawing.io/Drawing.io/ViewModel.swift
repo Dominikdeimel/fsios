@@ -21,11 +21,13 @@ class ViewModel: ObservableObject {
     @Published var image = UIImage()
     @Published var given = ""
     @Published var score = ""
+    @Published var games = Array<Game>()
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
         self.context = context
     }
+    
     func loadNewGame() {
         self.getCancellable?.cancel()
         self.getCancellable = networkModel.getNewGame().sink(receiveCompletion: {
@@ -40,6 +42,15 @@ class ViewModel: ObservableObject {
         })
     }
     
+    func getAllGamesByUserId() {
+        self.getCancellable?.cancel()
+        self.getCancellable = networkModel.getAllGamesByUserId().sink(receiveCompletion: {
+            err in print(err)
+        }, receiveValue: { games in
+            self.games = games
+        })
+    }
+    
     func loadWord() {
         self.getCancellable?.cancel()
         self.getCancellable = networkModel.getRandomWord().sink(receiveValue: { word in
@@ -47,22 +58,32 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func postData(_ image: UIImage, _ gameId: String = "") {
+    func postData(_ image: UIImage, _ gameId: String? = nil) {
         self.postCancellable?.cancel()
-        self.postCancellable =  networkModel.postInput(image, given).sink(receiveCompletion: {
-            err in
-            switch err {
-            case .finished:
-                break
-            case .failure(_):
-                self.databaseModel.createFailedImagePost(image, gameId, self.context)
-            }
-        }, receiveValue: {code in
-            if code != 200 {
-                //self.databaseModel.createFailedImagePost(image, gameId, self.context)
-                print("Error while posting")
-            }
-        })
+        if(gameId == nil){
+            self.postCancellable =  networkModel.postInitalData(image, given).sink(receiveCompletion: {
+                err in
+                switch err {
+                case .finished:
+                    break
+                case .failure(_):
+                    self.databaseModel.createFailedImagePost(image, (gameId != nil) ? gameId! : "" , self.context)
+                }
+            }, receiveValue: {code in
+                if code != 200 {
+                    //self.databaseModel.createFailedImagePost(image, gameId, self.context)
+                    print("Error while posting")
+                }
+            })
+        } else {
+            self.postCancellable = networkModel.postData(image, given, (gameId != nil) ? gameId! : "").sink(receiveCompletion: { _ in
+            }, receiveValue: {code in
+                if code != 200 {
+                    //self.databaseModel.createFailedImagePost(image, gameId, self.context)
+                    print("Error while posting")
+                }
+            })
+        }
     }
     
     func retryPostData(_ failedImagePost: FailedImagePost){

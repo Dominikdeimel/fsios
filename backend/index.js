@@ -36,7 +36,7 @@ app.get('/word', async (req, res) => {
     }))
 })
 
-app.get('/game/initial', async (req, res) => {
+app.get('/game/initial/guessing', async (req, res) => {
     try {
         const userId = req.query.userId
         let dir = await fs.promises.readdir('data')
@@ -82,7 +82,7 @@ app.get("/game/all", async (req, res) => {
     }
 })
 
-app.post('/image', async (req, res) => {
+app.post('/game/initial/drawing', async (req, res) => {
     try {
         const userId = req.body.userId
         const word = req.body.word
@@ -153,7 +153,6 @@ app.post('/game/finishround', async (req, res) => {
         const gameId = req.body.gameId
         let game = await fs.promises.readFile(`data/${gameId}.json`)
         const parsedGame = JSON.parse(game.toString())
-        parsedGame.activeUser = (parsedGame.activeUser === parsedGame.userId_0) ? parsedGame.userId_1 : parsedGame.userId_0
         parsedGame.state = 1
         parsedGame.rounds += 1
         parsedGame.score += roundScore
