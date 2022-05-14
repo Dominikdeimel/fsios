@@ -103,13 +103,13 @@ struct NetworkModel {
     
     func generateUserId(_ name: String) -> AnyPublisher<String?, Never> {
         let url = URL(string: "http://localhost:3000/id")!
-        let usersName = UsersName(name: name)
+        let userName = UserName(name: name)
         var request = URLRequest(url: url)
         
         
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try! JSONEncoder().encode(usersName)
+        request.httpBody = try! JSONEncoder().encode(userName)
         
 
         return URLSession.shared.dataTaskPublisher(for: request)
@@ -133,18 +133,23 @@ struct UserImage: Codable {
     let word: String
 }
 
-struct UsersName: Codable {
+struct UserName: Codable {
     let name: String
 }
 
-struct Game: Codable {
+struct Game: Codable, Identifiable {
     let gameId: String
     let userId_0: String
+    let userName_0: String
     let userId_1: String
+    let userName_1: String
     let activeUser: String
     let state: Int
     let rounds: Int
     let score: Int
     let word: String
     let image: String
+    var id: String {
+        gameId
+    }
 }
