@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require("fs");
@@ -9,12 +9,12 @@ const port = 3000
 app.use(bodyParser.json({limit: '50mb'}))
 
 app.get('/image', async (req, res) => {
-    await fs.readdir('data', async ( err, files) => {
-        if(err){
+    await fs.readdir('data', async (err, files) => {
+        if (err) {
             res.status(500)
             res.send(err)
         }
-        if(files.length > 0){
+        if (files.length > 0) {
             const random = Math.floor(Math.random() * files.length)
             await fs.readFile(`data/${files[random]}`, ((err, data) => {
                 let result = JSON.parse(data.toString())
@@ -45,6 +45,7 @@ app.get('/game/initial', async (req, res) => {
             const parsedGame = JSON.parse(game.toString())
             if (parsedGame.userId_1 === "" && parsedGame.userId_0 !== userId) {
                 parsedGame.userId_1 = userId
+                parsedGame.userName_1 = await getUserNameForId(userId)
                 parsedGame.activeUser = userId
                 parsedGame.state = 2
                 fs.writeFileSync(`data/${parsedGame.gameId}.json`, JSON.stringify(parsedGame))
@@ -63,14 +64,13 @@ app.get('/game/initial', async (req, res) => {
 app.get("/game/all", async (req, res) => {
     try {
         const userId = req.query.userId
-        console.log(userId)
         const response = []
 
         let dir = await fs.promises.readdir('data')
         for (const file of dir) {
             let game = await fs.promises.readFile(`data/${file}`)
             const parsedGame = JSON.parse(game.toString())
-            if(parsedGame.userId_0 === userId || parsedGame.userId_1 === userId){
+            if (parsedGame.userId_0 === userId || parsedGame.userId_1 === userId) {
                 response.push(parsedGame)
             }
         }
@@ -89,12 +89,14 @@ app.post('/image', async (req, res) => {
         const image = req.body.imageAsBase64
         const current_gameId = req.body.gameId
 
-        if(current_gameId === ""){
+        if (current_gameId === "") {
             const gameId = uuidv4()
             const gameData = {
                 gameId: gameId,
                 userId_0: userId,
+                userName_0: await getUserNameForId(userId),
                 userId_1: "",
+                userName_1: "",
                 activeUser: "",
                 state: 0,
                 rounds: 0,
@@ -103,9 +105,9 @@ app.post('/image', async (req, res) => {
                 image: image
             }
             const jsonString = JSON.stringify(gameData)
-            await fs.writeFile(`data/${gameId}.json`, jsonString, () =>{
+            await fs.writeFile(`data/${gameId}.json`, jsonString, () => {
                 res.status(200)
-                res.send("Image " + word + " from user " + userId + " saved successfully under data/" + gameId )
+                res.send("Image " + word + " from user " + userId + " saved successfully under data/" + gameId)
             })
         } else {
             //Todo falls game schon besteht
@@ -116,6 +118,19 @@ app.post('/image', async (req, res) => {
     }
 })
 
+async function getUserNameForId(userId) {
+    try {
+       const usersBuffer = await fs.promises.readFile('users.json')
+        const users = [...JSON.parse(usersBuffer.toString())]
+        const user = users.find(u => u.id === userId)
+
+        return user.name
+    } catch (e) {
+        console.log(e)
+        return ""
+    }
+}
+
 app.post('/id', async (req, res) => {
     const userName = req.body.name
     const userId = uuidv4()
@@ -125,7 +140,7 @@ app.post('/id', async (req, res) => {
             name: userName,
             id: userId
         }]
-        await fs.writeFile(`users.json`, JSON.stringify(users), () =>{
+        await fs.writeFile(`users.json`, JSON.stringify(users), () => {
             res.status(200)
             res.send(userId)
         })
@@ -138,7 +153,7 @@ app.post('/game/finishround', async (req, res) => {
         const gameId = req.body.gameId
         let game = await fs.promises.readFile(`data/${gameId}.json`)
         const parsedGame = JSON.parse(game.toString())
-        parsedGame.activeUser = (parsedGame.activeUser == parsedGame.userId_0) ? parsedGame.userId_1 : parsedGame.userId_0
+        parsedGame.activeUser = (parsedGame.activeUser === parsedGame.userId_0) ? parsedGame.userId_1 : parsedGame.userId_0
         parsedGame.state = 1
         parsedGame.rounds += 1
         parsedGame.score += roundScore
@@ -161,12 +176,12 @@ app.listen(port, async () => {
         fs.mkdirSync('data')
     }
 
-    try{
+    try {
         fs.readFileSync('users.json')
     } catch {
         const users = []
         const json = JSON.stringify(users)
-        await fs.writeFile(`users.json`, json, () =>{
+        await fs.writeFile(`users.json`, json, () => {
             console.log("users.json created")
         })
     }
