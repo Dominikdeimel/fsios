@@ -11,12 +11,13 @@ import Combine
 
 struct NetworkModel {
     
-    func getNewGame() -> AnyPublisher<Game, Error> {
-        var url = URLComponents(string: "http://localhost:3000/game/initial")!
+    func getGame(_ gameId: String?) -> AnyPublisher<Game, Error> {
+        var url = URLComponents(string: "http://localhost:3000/game/guessing")!
         let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
 
         url.queryItems = [
-            URLQueryItem(name: "userId", value: userId)
+            URLQueryItem(name: "userId", value: userId),
+            URLQueryItem(name: "gameId", value: gameId)
         ]
         
         let request = URLRequest(url: url.url!)

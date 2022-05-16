@@ -28,9 +28,9 @@ class ViewModel: ObservableObject {
         self.context = context
     }
     
-    func loadNewGame() {
+    func loadGame(_ gameId: String?) {
         self.getCancellable?.cancel()
-        self.getCancellable = networkModel.getNewGame().sink(receiveCompletion: {
+        self.getCancellable = networkModel.getGame(gameId).sink(receiveCompletion: {
             err in print(err)
         }, receiveValue: { game in
             let imageData = Data(base64Encoded: game.image)

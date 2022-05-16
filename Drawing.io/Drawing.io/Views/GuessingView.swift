@@ -13,6 +13,7 @@ struct GuessingView: View {
     @State var showScore = false
     @State var roundScore = 5
     @State var counter: Int = 1
+    var gameId: String? = nil
     
     @FocusState private var fieldIsFocused: Bool
     @EnvironmentObject var viewModel: ViewModel
@@ -51,7 +52,7 @@ struct GuessingView: View {
                 }
             } .padding()
                 .onAppear {
-                    viewModel.loadNewGame()
+                    viewModel.loadGame(gameId)
                 }
         } else {
             ZStack {
@@ -75,6 +76,7 @@ struct GuessingView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     counter += 1
                 }
+                
                 viewModel.finishRound(self.roundScore)
             }
         }

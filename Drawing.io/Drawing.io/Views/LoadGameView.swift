@@ -21,7 +21,7 @@ struct LoadGameView: View {
                         content(userId: userId, game: game)
                     }
                 } else if(game.state == 2){
-                    NavigationLink(destination: GuessingView()) {
+                    NavigationLink(destination: GuessingView(gameId: game.gameId)) {
                         content(userId: userId, game: game)
                     }
                 }

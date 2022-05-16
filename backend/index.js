@@ -36,25 +36,34 @@ app.get('/word', async (req, res) => {
     }))
 })
 
-app.get('/game/initial/guessing', async (req, res) => {
+app.get('/game/guessing', async (req, res) => {
     try {
         const userId = req.query.userId
-        let dir = await fs.promises.readdir('data')
-        for (const file of dir) {
-            let game = await fs.promises.readFile(`data/${file}`)
-            const parsedGame = JSON.parse(game.toString())
-            if (parsedGame.userId_1 === "" && parsedGame.userId_0 !== userId) {
-                parsedGame.userId_1 = userId
-                parsedGame.userName_1 = await getUserNameForId(userId)
-                parsedGame.activeUser = userId
-                parsedGame.state = 2
-                fs.writeFileSync(`data/${parsedGame.gameId}.json`, JSON.stringify(parsedGame))
-                res.status(200)
-                res.send(parsedGame)
-                break
+        const gameId = req.query.gameId
+
+        if(gameId === ""){
+            let dir = await fs.promises.readdir('data')
+            for (const file of dir) {
+                let game = await fs.promises.readFile(`data/${file}`)
+                const parsedGame = JSON.parse(game.toString())
+                if (parsedGame.userId_1 === "" && parsedGame.userId_0 !== userId) {
+                    parsedGame.userId_1 = userId
+                    parsedGame.userName_1 = await getUserNameForId(userId)
+                    parsedGame.activeUser = userId
+                    parsedGame.state = 2
+                    fs.writeFileSync(`data/${parsedGame.gameId}.json`, JSON.stringify(parsedGame))
+                    res.status(200)
+                    res.send(parsedGame)
+                    break
+                }
             }
+        } else {
+            let game = await fs.promises.readFile(`data/${gameId}.json`)
+            const parsedGame = JSON.parse(game.toString())
+
+            res.status(200)
+            res.send(parsedGame)
         }
-        // todo abcatchen file da
     } catch (e) {
         res.status(500)
         res.send(e)
@@ -76,6 +85,31 @@ app.get("/game/all", async (req, res) => {
         }
         res.status(200)
         res.send(response)
+    } catch (e) {
+        res.status(500)
+        res.send(e)
+    }
+})
+
+app.post('/game/drawing', async (req, res) => {
+    try {
+        const word = req.body.word
+        const image = req.body.imageAsBase64
+        const gameId = req.body.gameId
+
+        const game = await fs.promises.readFile(`data/${gameId}.json`)
+        const parsedGame = JSON.parse(game.toString())
+
+        parsedGame.image = image
+        parsedGame.word = word
+        parsedGame.state = 2
+        parsedGame.activeUser = (parsedGame.activeUser === parsedGame.userId_0) ? parsedGame.userId_1 : parsedGame.userId_0
+
+        const jsonString = JSON.stringify(parsedGame)
+        await fs.promises.writeFile(`data/${gameId}.json`, jsonString)
+
+        res.status(200)
+        res.send("Image " + word + " from user " + userId + " saved successfully under data/" + gameId)
     } catch (e) {
         res.status(500)
         res.send(e)
