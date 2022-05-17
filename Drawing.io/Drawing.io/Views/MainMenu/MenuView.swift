@@ -29,8 +29,7 @@ struct MenuView: View {
                             }
                     }
                 }
-                Spacer()
-                Image("Logo").padding(.bottom).scaleEffect(0.45).frame(width: 50.0, height: 250.0)
+                Image("Logo").padding(.bottom).scaleEffect(0.2).frame(width: 50.0, height: 250.0)
                 Spacer()
                 NavigationLink(destination: NewGameView()) {
                     CoolButton(buttonText: "New Game")
