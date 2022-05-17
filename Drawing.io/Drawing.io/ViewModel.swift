@@ -34,8 +34,8 @@ class ViewModel: ObservableObject {
             err in print(err)
         }, receiveValue: { game in
             let imageData = Data(base64Encoded: game.image)
-            if let imageData = imageData {
-                self.image = UIImage(data: imageData)!
+            if let imageData = imageData, let image = UIImage(data: imageData) {
+                self.image = image
             }
             self.currentGame = game
             self.given = game.word

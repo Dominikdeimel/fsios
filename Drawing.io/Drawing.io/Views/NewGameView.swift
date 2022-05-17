@@ -18,21 +18,12 @@ struct NewGameView: View {
             VStack {
                 Spacer()
                 NavigationLink(destination: DrawingView(gameId: nil)) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.cyan)
-                            .frame(width: 250, height: 100)
-                        Text("Draw").foregroundColor(.black)
-                    }
+                    CoolButton(buttonText: "Draw")
+
                 }
                 Spacer()
-                NavigationLink(destination: GuessingView()) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.cyan)
-                            .frame(width: 250, height: 100)
-                        Text("Guess").foregroundColor(.black)
-                    }
+                NavigationLink(destination: GuessingView(gameId: nil)) {
+                    CoolButton(buttonText: "Guess")
                 }
                 Spacer()
             }

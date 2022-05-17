@@ -30,31 +30,24 @@ struct MenuView: View {
                     }
                 }
                 Spacer()
-                NavigationLink(destination: LoadGameView()) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.cyan)
-                            .frame(width: 250, height: 100)
-                        Text("Load Game").foregroundColor(.black)
-                    }
-                }
+                Image("Logo").padding(.bottom).scaleEffect(0.45).frame(width: 50.0, height: 250.0)
                 Spacer()
                 NavigationLink(destination: NewGameView()) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.cyan)
-                            .frame(width: 250, height: 100)
-                        Text("New Game").foregroundColor(.black)
-                    }
+                    CoolButton(buttonText: "New Game")
                 }
+                .padding(.vertical)
+                NavigationLink(destination: LoadGameView()) {
+                    CoolButton(buttonText: "Load Game")
+                }
+                .padding(.top)
                 Spacer()
             }.navigationTitle("Drawing.io")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
-                    let userName = UserDefaults.standard.string(forKey: "userName")
+                    /*let userName = UserDefaults.standard.string(forKey: "userName")
                     if(userName == nil) {
                         showLoginScreen.toggle()
-                    }
+                    }*/
                 }.sheet(isPresented: $showLoginScreen) {
                     LoginView()
                 }

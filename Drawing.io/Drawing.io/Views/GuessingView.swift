@@ -16,7 +16,7 @@ struct GuessingView: View {
     var gameId: String? = nil
     
     @FocusState private var fieldIsFocused: Bool
-    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var viewModel: ViewModel 
     
     var body: some View {
         if(!showScore){
@@ -87,6 +87,6 @@ struct GuessingView: View {
 
 struct GuessingView_Previews: PreviewProvider {
     static var previews: some View {
-        GuessingView()
+        GuessingView(gameId: nil)
     }
 }
