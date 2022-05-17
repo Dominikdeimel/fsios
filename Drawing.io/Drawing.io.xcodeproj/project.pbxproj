@@ -13,7 +13,7 @@
 		2B14E6A527CE2BAB0048502D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B14E6A427CE2BAB0048502D /* Preview Assets.xcassets */; };
 		2B14E6AC27CE2F900048502D /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B14E6AB27CE2F900048502D /* ViewModel.swift */; };
 		2B14E6AE27CE2F9C0048502D /* NetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B14E6AD27CE2F9C0048502D /* NetworkModel.swift */; };
-		2B6E9E5827D7696600B97936 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6E9E5727D7696600B97936 /* MenuView.swift */; };
+		2B6E9E5827D7696600B97936 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6E9E5727D7696600B97936 /* NewGameView.swift */; };
 		2B72598427E20F60000457DD /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B72598227E20F60000457DD /* DataModel.xcdatamodeld */; };
 		2B95DEB527D2723100DF0613 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95DEB327D2723100DF0613 /* Canvas.swift */; };
 		2B95DEB827D2726500DF0613 /* DrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95DEB727D2726500DF0613 /* DrawingViewController.swift */; };
@@ -21,8 +21,10 @@
 		2BC7F06727E4917C0028873F /* DatabaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC7F06627E4917C0028873F /* DatabaseModel.swift */; };
 		2BD3837A27F479B000249E0C /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837927F479B000249E0C /* Util.swift */; };
 		2BD3837C27F479F200249E0C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837B27F479F200249E0C /* LoginView.swift */; };
-		2BD3837E27F5B25300249E0C /* FailedRequestsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837D27F5B25300249E0C /* FailedRequestsViews.swift */; };
-		8531DF0827E234A500F107DE /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0727E234A500F107DE /* ScoreView.swift */; };
+		2BD3837E27F5B25300249E0C /* FailedRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD3837D27F5B25300249E0C /* FailedRequestsView.swift */; };
+		2BEFDAC92834039200EDC7A2 /* CoolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEFDAC82834039200EDC7A2 /* CoolButton.swift */; };
+		85305145282BD47A00E0EF72 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85305144282BD47A00E0EF72 /* MenuView.swift */; };
+		85305148282BD52800E0EF72 /* LoadGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85305147282BD52800E0EF72 /* LoadGameView.swift */; };
 		8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0927E74CAF00F107DE /* ConfettiView.swift */; };
 		85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D348EB27D7822300FCDC10 /* GuessingView.swift */; };
 /* End PBXBuildFile section */
@@ -35,7 +37,7 @@
 		2B14E6A427CE2BAB0048502D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2B14E6AB27CE2F900048502D /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		2B14E6AD27CE2F9C0048502D /* NetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModel.swift; sourceTree = "<group>"; };
-		2B6E9E5727D7696600B97936 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		2B6E9E5727D7696600B97936 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
 		2B72598327E20F60000457DD /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		2B95DEB327D2723100DF0613 /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		2B95DEB727D2726500DF0613 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
@@ -43,8 +45,10 @@
 		2BC7F06627E4917C0028873F /* DatabaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseModel.swift; sourceTree = "<group>"; };
 		2BD3837927F479B000249E0C /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		2BD3837B27F479F200249E0C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		2BD3837D27F5B25300249E0C /* FailedRequestsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedRequestsViews.swift; sourceTree = "<group>"; };
-		8531DF0727E234A500F107DE /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
+		2BD3837D27F5B25300249E0C /* FailedRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedRequestsView.swift; sourceTree = "<group>"; };
+		2BEFDAC82834039200EDC7A2 /* CoolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoolButton.swift; sourceTree = "<group>"; };
+		85305144282BD47A00E0EF72 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		85305147282BD52800E0EF72 /* LoadGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadGameView.swift; sourceTree = "<group>"; };
 		8531DF0927E74CAF00F107DE /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		85D348EB27D7822300FCDC10 /* GuessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,21 +125,31 @@
 		2BD3837F27F5B27800249E0C /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
-				2B6E9E5727D7696600B97936 /* MenuView.swift */,
 				2BD3837B27F479F200249E0C /* LoginView.swift */,
-				2BD3837D27F5B25300249E0C /* FailedRequestsViews.swift */,
+				2BD3837D27F5B25300249E0C /* FailedRequestsView.swift */,
+				85305144282BD47A00E0EF72 /* MenuView.swift */,
 			);
 			path = MainMenu;
+			sourceTree = "<group>";
+		};
+		2BEFDAC72834035100EDC7A2 /* UI Elements */ = {
+			isa = PBXGroup;
+			children = (
+				2BEFDAC82834039200EDC7A2 /* CoolButton.swift */,
+			);
+			path = "UI Elements";
 			sourceTree = "<group>";
 		};
 		85D348EF27D7931500FCDC10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2BEFDAC72834035100EDC7A2 /* UI Elements */,
 				2BD3837F27F5B27800249E0C /* MainMenu */,
 				8531DF0927E74CAF00F107DE /* ConfettiView.swift */,
+				2B6E9E5727D7696600B97936 /* NewGameView.swift */,
 				2B14E69F27CE2BA90048502D /* DrawingView.swift */,
 				85D348EB27D7822300FCDC10 /* GuessingView.swift */,
-				8531DF0727E234A500F107DE /* ScoreView.swift */,
+				85305147282BD52800E0EF72 /* LoadGameView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -220,14 +234,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BC7F06727E4917C0028873F /* DatabaseModel.swift in Sources */,
-				2B6E9E5827D7696600B97936 /* MenuView.swift in Sources */,
+				2B6E9E5827D7696600B97936 /* NewGameView.swift in Sources */,
 				2BC7F06427E489A60028873F /* DatabaseController.swift in Sources */,
 				2B14E6A027CE2BA90048502D /* DrawingView.swift in Sources */,
-				2BD3837E27F5B25300249E0C /* FailedRequestsViews.swift in Sources */,
-				8531DF0827E234A500F107DE /* ScoreView.swift in Sources */,
+				2BD3837E27F5B25300249E0C /* FailedRequestsView.swift in Sources */,
 				2B95DEB827D2726500DF0613 /* DrawingViewController.swift in Sources */,
 				2B14E6AC27CE2F900048502D /* ViewModel.swift in Sources */,
+				85305145282BD47A00E0EF72 /* MenuView.swift in Sources */,
+				85305148282BD52800E0EF72 /* LoadGameView.swift in Sources */,
 				2BD3837A27F479B000249E0C /* Util.swift in Sources */,
+				2BEFDAC92834039200EDC7A2 /* CoolButton.swift in Sources */,
 				2B14E69E27CE2BA90048502D /* Drawing_ioApp.swift in Sources */,
 				85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */,
 				2B72598427E20F60000457DD /* DataModel.xcdatamodeld in Sources */,

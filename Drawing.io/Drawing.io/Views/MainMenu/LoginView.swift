@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var viewModel: ViewModel
     @State private var userName: String = ""
     @State private var invalidInput = false
 
@@ -21,8 +22,8 @@ struct LoginView: View {
         .padding()
         Button("Fertig"){
             if userName.count > 0 {
-                UserDefaults.standard.set(randomString(), forKey: "userId")
                 UserDefaults.standard.set(userName, forKey: "userName")
+                viewModel.generateUserId(userName)
                 presentationMode.wrappedValue.dismiss()
             } else {
                 invalidInput.toggle()

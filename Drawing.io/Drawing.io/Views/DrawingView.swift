@@ -8,13 +8,14 @@
 import SwiftUI
 import PencilKit
 
-struct ContentView: View {
+struct DrawingView: View {
     @Environment(\.undoManager) private var undoManager
     @Environment(\.presentationMode) private var presentationMode
-    private var drawingController = DrawingViewController()
+    @State var drawingController = DrawingViewController()
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
+    let gameId: String?
     
     var body: some View {
         VStack {
@@ -33,7 +34,11 @@ struct ContentView: View {
                             primaryButton:
                                     .default(Text("Ja")) {
                                         let image = drawingController.saveImg()
-                                        viewModel.postData(image)
+                                        if(gameId == nil){
+                                            viewModel.postData(image)
+                                        } else {
+                                            viewModel.postData(image, gameId)
+                                        }
                                         
                                         presentationMode.wrappedValue.dismiss()
                                     },
@@ -73,9 +78,7 @@ struct ContentView: View {
                 })
                     .padding(.horizontal)
             }
-            Canvas(vc: drawingController).onAppear {
-                drawingController.clear()
-            }
+            Canvas(vc: drawingController)
         }.onAppear {
             viewModel.loadWord()
         }
@@ -84,6 +87,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        DrawingView(gameId: nil)
     }
 }

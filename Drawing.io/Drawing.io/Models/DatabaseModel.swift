@@ -11,13 +11,13 @@ import CoreData
 
 struct DatabaseModel {
     
-    func createFailedImagePost(_ image: UIImage, _ context: NSManagedObjectContext) {
+    func createFailedImagePost(_ image: UIImage, _ gameId: String, _ context: NSManagedObjectContext) {
         let imageData = image.jpegData(compressionQuality: 1)
         let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
         
         let failedImagePost = FailedImagePost(context: context)
         
-        failedImagePost.gameId = randomString()
+        failedImagePost.gameId = gameId
         failedImagePost.imageAsBase64 = imageAsBase64
         failedImagePost.errorDate = Date()
         
@@ -27,5 +27,7 @@ struct DatabaseModel {
     
     func deleteFailedImagePost(_ failedImagePost: FailedImagePost, _ context: NSManagedObjectContext) {
         context.delete(failedImagePost)
+        try? context.save()
+       
     }
 }
