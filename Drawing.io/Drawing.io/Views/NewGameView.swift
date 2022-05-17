@@ -18,12 +18,12 @@ struct NewGameView: View {
             VStack {
                 Spacer()
                 NavigationLink(destination: DrawingView(gameId: nil)) {
-                    CoolButton(buttonText: "Draw")
+                    CoolButton(buttonText: "Zeichnen")
 
                 }
                 Spacer()
                 NavigationLink(destination: GuessingView(gameId: nil)) {
-                    CoolButton(buttonText: "Guess")
+                    CoolButton(buttonText: "Raten")
                 }
                 Spacer()
             }

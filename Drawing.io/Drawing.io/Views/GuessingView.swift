@@ -21,10 +21,22 @@ struct GuessingView: View {
     var body: some View {
         if(!showScore){
             VStack {
-                Image(uiImage: viewModel.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .border(.gray)
+                ZStack {
+                    Rectangle()
+                        .fill()
+                        .foregroundColor(Color("Main"))
+                        .frame(width: 410, height: 410)
+                    Rectangle()
+                        .strokeBorder(lineWidth: 4)
+                        .foregroundColor(Color("Outline"))
+                        .frame(width: 410, height: 410)
+                        .offset(x: -6.0, y: 8.0)
+                    Image(uiImage: viewModel.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(5)
+                }
+                .padding(.vertical)
                 TextField(
                     "Wort",
                     text: $word
@@ -33,7 +45,7 @@ struct GuessingView: View {
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .border(.secondary)
-                Button("Submit") {
+                Button("Raten") {
                     if (viewModel.matchWords(word, viewModel.given)) {
                         showScore = true
                     } else {
@@ -58,12 +70,24 @@ struct GuessingView: View {
             ZStack {
                 VStack {
                     Text(viewModel.given)
-                    Image(uiImage: viewModel.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .border(.gray)
-                    Text("Score: " + String(self.roundScore))
-                    Text("Gesamtscore: " + viewModel.score)
+                        .font(.title2)
+                    ZStack {
+                        Rectangle()
+                            .fill()
+                            .foregroundColor(Color("Main"))
+                            .frame(width: 410, height: 410)
+                        Rectangle()
+                            .strokeBorder(lineWidth: 4)
+                            .foregroundColor(Color("Outline"))
+                            .frame(width: 410, height: 410)
+                            .offset(x: -6.0, y: 8.0)
+                        Image(uiImage: viewModel.image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(5)
+                    }
+                    Text("Punkte: " + String(self.roundScore))
+                    Text("Gesamt: " + viewModel.score)
                     ConfettiCannon(counter: $counter)
                 }
                 .padding()
