@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 func randomString() -> String {
     let chars = "abcdefghijklmnopqrstuvwxyz1234567890"
@@ -15,4 +16,9 @@ func randomString() -> String {
     }
 
     return randomString
+}
+
+func getImageAsBase64(_ image: UIImage) -> String {
+    let imageData = image.jpegData(compressionQuality: 1)
+    return imageData?.base64EncodedString() ?? "Missing image data"
 }

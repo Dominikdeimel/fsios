@@ -11,23 +11,27 @@ import CoreData
 
 struct DatabaseModel {
     
-    func createFailedImagePost(_ image: UIImage, _ gameId: String, _ context: NSManagedObjectContext) {
-        let imageData = image.jpegData(compressionQuality: 1)
-        let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
-        
-        let failedImagePost = FailedImagePost(context: context)
-        
-        failedImagePost.gameId = gameId
-        failedImagePost.imageAsBase64 = imageAsBase64
-        failedImagePost.errorDate = Date()
+    func createFailedRequests(_ requestType: FailedRequestType, _ gameId: String?, _ image: UIImage?,_ word: String?, _ context: NSManagedObjectContext) {
+        let failedRequest = FailedRequest(context: context)
+        failedRequest.errorDate = Date()
+        failedRequest.gameId = gameId ?? ""
+        failedRequest.userId = UserDefaults.standard.string(forKey: "userId") ?? ""
+        failedRequest.type = requestType.rawValue
+        failedRequest.imageAsBase64 = (image != nil) ? getImageAsBase64(image ?? UIImage()) : ""
+        failedRequest.word = word ?? ""
         
         try? context.save()
         
     }
     
-    func deleteFailedImagePost(_ failedImagePost: FailedImagePost, _ context: NSManagedObjectContext) {
-        context.delete(failedImagePost)
+    func deleteFailedImagePost(_ failedRequest: FailedRequest, _ context: NSManagedObjectContext) {
+        context.delete(failedRequest)
         try? context.save()
        
     }
+}
+
+enum FailedRequestType: String {
+    case initialDataPost = "initialPostData"
+    case dataPost = "postData"
 }
