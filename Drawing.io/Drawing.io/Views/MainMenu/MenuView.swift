@@ -43,7 +43,7 @@ struct MenuView: View {
             }.navigationTitle("Drawing.io")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
-                    let userName = UserDefaults.standard.string(forKey: "userName")
+                    let userName = UserDefaults.standard.string(forKey: "userId")
                     if(userName == nil) {
                         showLoginScreen.toggle()
                     }

@@ -22,6 +22,8 @@ class ViewModel: ObservableObject {
     @Published var given = ""
     @Published var score = ""
     @Published var games = Array<Game>()
+    @Published var showNoConnectionAlert = false
+    
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -116,9 +118,13 @@ class ViewModel: ObservableObject {
     
     func generateUserId(_ name: String){
         self.postCancellable?.cancel()
-        self.postCancellable = networkModel.generateUserId(name).sink(receiveValue: { id in
-            UserDefaults.standard.set(id, forKey: "userId")
-        })
+        self.postCancellable = networkModel.generateUserId(name).sink { id in
+            if(id != nil){
+                UserDefaults.standard.set(id, forKey: "userId")
+            } else {
+                self.showNoConnectionAlert = true
+            }
+        }
     }
     
     func matchWords(_ guessed: String, _ wordData: String) -> Bool {
