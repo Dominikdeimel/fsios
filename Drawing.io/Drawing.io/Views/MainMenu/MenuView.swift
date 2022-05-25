@@ -12,6 +12,8 @@ struct MenuView: View {
     
     @State var showFailedRequests = false
     @State var showLoginScreen = false
+    private let userPrefs = UserPreferencesKeys()
+
 
     var body: some View {
         NavigationView {
@@ -43,10 +45,10 @@ struct MenuView: View {
             }.navigationTitle("Drawing.io")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
-                    /*let userName = UserDefaults.standard.string(forKey: "userName")
+                    let userName = UserDefaults.standard.string(forKey: userPrefs.username)
                     if(userName == nil) {
                         showLoginScreen.toggle()
-                    }*/
+                    }
                 }.sheet(isPresented: $showLoginScreen) {
                     LoginView()
                 }

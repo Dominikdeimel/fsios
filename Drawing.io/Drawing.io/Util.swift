@@ -16,3 +16,16 @@ func randomString() -> String {
 
     return randomString
 }
+
+struct ErrorMessages {
+    let missingUserId = "Missing userId"
+    let missingUserName = "Missing userName"
+    let missingImageData = "Missing imageData"
+    let missingGameId = "Missing gameId"
+    let posting = "Error while posting"
+}
+
+struct UserPreferencesKeys {
+    let userId = "userId"
+    let username = "userName"
+}

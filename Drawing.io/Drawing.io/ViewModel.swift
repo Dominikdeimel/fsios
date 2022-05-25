@@ -13,6 +13,8 @@ import CoreData
 class ViewModel: ObservableObject {
     private var networkModel = NetworkModel()
     private var databaseModel = DatabaseModel()
+    private let userPrefs = UserPreferencesKeys()
+    private let errorMessages = ErrorMessages()
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
@@ -72,7 +74,7 @@ class ViewModel: ObservableObject {
             }, receiveValue: {code in
                 if code != 200 {
                     //self.databaseModel.createFailedImagePost(image, gameId, self.context)
-                    print("Error while posting")
+                    print(self.errorMessages.posting)
                 }
             })
         } else {
@@ -80,7 +82,7 @@ class ViewModel: ObservableObject {
             }, receiveValue: {code in
                 if code != 200 {
                     //self.databaseModel.createFailedImagePost(image, gameId, self.context)
-                    print("Error while posting")
+                    print(self.errorMessages.posting)
                 }
             })
         }
@@ -88,8 +90,8 @@ class ViewModel: ObservableObject {
     
     func retryPostData(_ failedImagePost: FailedImagePost){
         self.postCancellable?.cancel()
-        let imageAsBase64 = failedImagePost.imageAsBase64 ?? "Missing image data"
-        let gameId = failedImagePost.gameId ?? "Missing gameId"
+        let imageAsBase64 = failedImagePost.imageAsBase64 ?? errorMessages.missingImageData
+        let gameId = failedImagePost.gameId ?? errorMessages.missingGameId
         
         self.postCancellable = networkModel.retryPostImage(imageAsBase64, gameId, given).sink(receiveCompletion: { _ in
         }, receiveValue: {statuscode in
@@ -102,7 +104,7 @@ class ViewModel: ObservableObject {
     func generateUserId(_ name: String){
         self.postCancellable?.cancel()
         self.postCancellable = networkModel.generateUserId(name).sink(receiveValue: { id in
-            UserDefaults.standard.set(id, forKey: "userId")
+            UserDefaults.standard.set(id, forKey: userPrefs.userId)
         })
     }
     

@@ -10,10 +10,11 @@ import UIKit
 import CoreData
 
 struct DatabaseModel {
-    
+    private let errorMessages = ErrorMessages()
+
     func createFailedImagePost(_ image: UIImage, _ gameId: String, _ context: NSManagedObjectContext) {
         let imageData = image.jpegData(compressionQuality: 1)
-        let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
+        let imageAsBase64 = imageData?.base64EncodedString() ?? errorMessages.missingImageData
         
         let failedImagePost = FailedImagePost(context: context)
         

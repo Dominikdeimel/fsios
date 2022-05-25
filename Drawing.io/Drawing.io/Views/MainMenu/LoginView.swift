@@ -12,6 +12,7 @@ struct LoginView: View {
     @EnvironmentObject var viewModel: ViewModel
     @State private var userName: String = ""
     @State private var invalidInput = false
+    private let userPrefs = UserPreferencesKeys()
 
     var body: some View {
         TextField(
@@ -22,7 +23,7 @@ struct LoginView: View {
         .padding()
         Button("Fertig"){
             if userName.count > 0 {
-                UserDefaults.standard.set(userName, forKey: "userName")
+                UserDefaults.standard.set(userName, forKey: userPrefs.username)
                 viewModel.generateUserId(userName)
                 presentationMode.wrappedValue.dismiss()
             } else {
