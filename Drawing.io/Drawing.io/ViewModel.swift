@@ -104,7 +104,7 @@ class ViewModel: ObservableObject {
     func generateUserId(_ name: String){
         self.postCancellable?.cancel()
         self.postCancellable = networkModel.generateUserId(name).sink(receiveValue: { id in
-            UserDefaults.standard.set(id, forKey: userPrefs.userId)
+            UserDefaults.standard.set(id, forKey: self.userPrefs.userId)
         })
     }
     
