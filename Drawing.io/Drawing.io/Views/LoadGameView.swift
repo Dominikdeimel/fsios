@@ -42,6 +42,9 @@ struct LoadGameView: View {
         }.onAppear {
             viewModel.getAllGamesByUserId()
         }
+        .refreshable {
+            viewModel.getAllGamesByUserId()
+        }
     }
             
         

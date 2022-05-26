@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MenuView: View {
-    @FetchRequest(sortDescriptors: []) var failedImagePosts: FetchedResults<FailedImagePost>
+    @FetchRequest(sortDescriptors: []) var failedImagePosts: FetchedResults<FailedRequest>
     
     @State var showFailedRequests = false
     @State var showLoginScreen = false
@@ -45,8 +45,8 @@ struct MenuView: View {
             }.navigationTitle("Drawing.io")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
-                    let userName = UserDefaults.standard.string(forKey: userPrefs.username)
-                    if(userName == nil) {
+                    let userId = UserDefaults.standard.string(forKey: "userId")
+                    if(userId == nil) {
                         showLoginScreen.toggle()
                     }
                 }.sheet(isPresented: $showLoginScreen) {

@@ -58,14 +58,11 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func postInitalData(_ image: UIImage, _ word: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: urls.game_initial_drawing)!
-        let userId = UserDefaults.standard.string(forKey: userPrefs.userId) ?? errorMessages.missingUserId
-        let userName = UserDefaults.standard.string(forKey: userPrefs.username) ?? errorMessages.missingUserName
-        
-        let imageData = image.jpegData(compressionQuality: 1)
-        let imageAsBase64 = imageData?.base64EncodedString() ?? errorMessages.missingImageData
-       
+    func postInitalData(_ imageAsBase64: String, _ word: String) -> AnyPublisher<Int, URLError> {
+        let url = URL(string: "http://localhost:3000/game/initial/drawing")!
+        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
+        let userName = UserDefaults.standard.string(forKey: "userName") ?? "Missing userName"
+               
         let userImage = InitialUserImage(userId: userId, gameId: "", userName: userName, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
@@ -82,11 +79,9 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func postData(_ image: UIImage, _ word: String, _ gameId: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: urls.game_drawing)!
-        let imageData = image.jpegData(compressionQuality: 1)
-        let imageAsBase64 = imageData?.base64EncodedString() ?? errorMessages.missingImageData
-       
+    func postData(_ imageAsBase64: String, _ word: String, _ gameId: String) -> AnyPublisher<Int, URLError> {
+        let url = URL(string: "http://localhost:3000/game/drawing")!
+
         let userImage = UserImage(gameId: gameId, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
@@ -99,28 +94,6 @@ struct NetworkModel {
             .map { let response = $0.response as! HTTPURLResponse
                 return response.statusCode
             }
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
-    
-    func retryPostImage(_ imageAsBase64: String, _ gameId: String, _ word: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: urls.game_initial_drawing)!
-        let userId = UserDefaults.standard.string(forKey: userPrefs.userId) ?? errorMessages.missingUserId
-        let userName = UserDefaults.standard.string(forKey: userPrefs.username) ?? errorMessages.missingUserName
-
-        let userImage = InitialUserImage(userId: userId, gameId: gameId, userName: userName, imageAsBase64: imageAsBase64, word: word)
-        let encodedUserImage = try! JSONEncoder().encode(userImage)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = encodedUserImage
-        
-        return URLSession.shared.dataTaskPublisher(for: request)
-            . map {
-                let response = $0.response as! HTTPURLResponse
-                return response.statusCode
-                }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
