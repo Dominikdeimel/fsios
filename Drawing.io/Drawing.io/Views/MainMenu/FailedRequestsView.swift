@@ -40,6 +40,6 @@ struct FailedRequestsRow: View {
             }, label: {
                 Image(systemName: "icloud.and.arrow.up")
             })
-        }.foregroundColor((failedRequest.type == "initialPostData") ? .red : .blue)
+        }
     }
 }
