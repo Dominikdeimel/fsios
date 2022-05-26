@@ -13,6 +13,8 @@ import CoreData
 class ViewModel: ObservableObject {
     private var networkModel = NetworkModel()
     private var databaseModel = DatabaseModel()
+    private let userPrefs = UserPreferencesKeys()
+    private let errorMessages = ErrorMessages()
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
