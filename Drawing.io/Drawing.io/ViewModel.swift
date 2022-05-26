@@ -69,12 +69,11 @@ class ViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(_):
-                    self.databaseModel.createFailedRequests(FailedRequestType.initialDataPost, nil, image, self.given, self.context)
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.initialDataPost, gameId: "", image: image, word: self.given, self.context)
                 }
             }, receiveValue: {code in
                 if code != 200 {
-                    self.databaseModel.createFailedRequests(FailedRequestType.initialDataPost, nil, image, self.given, self.context)
-                    print("Error while posting")
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.initialDataPost, gameId: "", image: image, word: self.given, self.context)
                 }
             })
         } else {
@@ -84,12 +83,11 @@ class ViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(_):
-                    self.databaseModel.createFailedRequests(FailedRequestType.dataPost, gameId, image, self.given, self.context)
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.dataPost, gameId: gameId ?? "", image: image, word: self.given, self.context)
                 }
             }, receiveValue: {code in
                 if code != 200 {
-                    self.databaseModel.createFailedRequests(FailedRequestType.dataPost, gameId, image, self.given, self.context)
-                    print("Error while posting")
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.dataPost, gameId: gameId ?? "", image: image, word: self.given, self.context)
                 }
             })
         }
