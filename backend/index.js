@@ -109,9 +109,10 @@ app.post('/game/drawing', async (req, res) => {
         await fs.promises.writeFile(`data/${gameId}.json`, jsonString)
 
         res.status(200)
-        res.send("Image " + word + " from user " + userId + " saved successfully under data/" + gameId)
+        res.send()
     } catch (e) {
         res.status(500)
+        console.log(e)
         res.send(e)
     }
 })
@@ -143,11 +144,10 @@ app.post('/game/initial/drawing', async (req, res) => {
                 res.status(200)
                 res.send("Image " + word + " from user " + userId + " saved successfully under data/" + gameId)
             })
-        } else {
-            //Todo falls game schon besteht
         }
     } catch (e) {
         res.status(500)
+        console.log(e)
         res.send(e)
     }
 })

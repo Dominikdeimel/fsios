@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct FailedRequestsView: View {
-    @FetchRequest(sortDescriptors: []) var failedImagePosts: FetchedResults<FailedImagePost>
+    @FetchRequest(sortDescriptors: []) var failedRequests: FetchedResults<FailedRequest>
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
@@ -17,8 +17,8 @@ struct FailedRequestsView: View {
             Spacer()
             Text("Fehlerhafte Bildübertragungen").font(.title)
             Spacer()
-            List(failedImagePosts){ failedImagePost in
-                FailedRequestsRow(failedImagePost: failedImagePost)
+            List(failedRequests){ failedRequest in
+                FailedRequestsRow(failedRequest: failedRequest)
             }
         }
     }
@@ -26,15 +26,16 @@ struct FailedRequestsView: View {
 
 struct FailedRequestsRow: View {
     @EnvironmentObject var viewModel: ViewModel
-    var failedImagePost: FailedImagePost
+    var failedRequest: FailedRequest
+    
     
     var body: some View {
         HStack {
-            Text("Fehlerhafte Übertragung von " + (failedImagePost.errorDate?.formatted() ?? "No Date available"))
+            Text("Fehlerhafte Übertragung von " + (failedRequest.errorDate?.formatted() ?? "No Date available"))
             Spacer()
             Button(action: {
                 withAnimation {
-                    viewModel.retryPostData(failedImagePost)
+                    viewModel.retryFailedRequest(failedRequest)
                 }
             }, label: {
                 Image(systemName: "icloud.and.arrow.up")
