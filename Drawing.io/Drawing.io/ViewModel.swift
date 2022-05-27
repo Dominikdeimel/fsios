@@ -18,8 +18,8 @@ class ViewModel: ObservableObject {
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
-    private var currentGame: Game?
     
+    @Published var currentGame: Game?
     @Published var image = UIImage()
     @Published var given = ""
     @Published var score = ""
