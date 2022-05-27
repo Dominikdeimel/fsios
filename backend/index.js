@@ -2,6 +2,18 @@ const {v4: uuidv4} = require('uuid');
 const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require("fs");
+const apn = require('apn');
+
+const app_bundle_id = "com.th-koeln.deimel.Drawing-io"
+const options = {
+    token: {
+        key: "AuthKey_B7C3P4D8PS.p8",
+        keyId: "B7C3P4D8PS",
+        teamId: "E5ZZ8MJF58"
+    },
+    production: false
+}
+const apnProvider = new apn.Provider(options)
 
 const app = express()
 const port = 3000
@@ -105,6 +117,9 @@ app.post('/game/drawing', async (req, res) => {
         parsedGame.state = 2
         parsedGame.activeUser = (parsedGame.activeUser === parsedGame.userId_0) ? parsedGame.userId_1 : parsedGame.userId_0
 
+        const opponent = (parsedGame.activeUser === parsedGame.userId_0) ? parsedGame.userName_1 : parsedGame.userName_0
+        await sendPushNotification("Du bist dran",`Spiel gegen ${opponent}`, parsedGame.activeUser)
+
         const jsonString = JSON.stringify(parsedGame)
         await fs.promises.writeFile(`data/${gameId}.json`, jsonString)
 
@@ -165,14 +180,46 @@ async function getUserNameForId(userId) {
     }
 }
 
+async function sendPushNotification(alert, title, userId){
+    const note = new apn.Notification();
+    const deviceToken = await getDeviceTokenForId(userId)
+
+    note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+    note.badge = 3;
+    note.sound = "ping.aiff";
+    note.alert = alert
+    note.title = title
+    note.payload = {"sender": "node-apn"};
+    note.topic = app_bundle_id;
+
+    if(deviceToken !== "") {
+        await apnProvider.send(note, deviceToken)
+    }
+}
+
+async function getDeviceTokenForId(userId) {
+    try {
+        const usersBuffer = await fs.promises.readFile('users.json')
+        const users = [...JSON.parse(usersBuffer.toString())]
+        const user = users.find(u => u.id === userId)
+
+        return user.deviceToken ?? ""
+    } catch (e) {
+        console.log(e)
+        return ""
+    }
+}
+
 app.post('/id', async (req, res) => {
     const userName = req.body.name
+    const deviceToken = req.body.deviceToken
     const userId = uuidv4()
 
     await fs.readFile('users.json', (async (err, usersBuffer) => {
         const users = [...JSON.parse(usersBuffer.toString()), {
             name: userName,
-            id: userId
+            id: userId,
+            deviceToken: deviceToken
         }]
         await fs.writeFile(`users.json`, JSON.stringify(users), () => {
             res.status(200)

@@ -41,6 +41,7 @@
 		2B72598327E20F60000457DD /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		2B95DEB327D2723100DF0613 /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		2B95DEB727D2726500DF0613 /* DrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingViewController.swift; sourceTree = "<group>"; };
+		2BA432E62840D5570002BB68 /* Drawing.io.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Drawing.io.entitlements; sourceTree = "<group>"; };
 		2BC7F06327E489A60028873F /* DatabaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
 		2BC7F06627E4917C0028873F /* DatabaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseModel.swift; sourceTree = "<group>"; };
 		2BD3837927F479B000249E0C /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 		2B14E69C27CE2BA90048502D /* Drawing.io */ = {
 			isa = PBXGroup;
 			children = (
+				2BA432E62840D5570002BB68 /* Drawing.io.entitlements */,
 				2BC7F06527E4916A0028873F /* Models */,
 				85D348EF27D7931500FCDC10 /* Views */,
 				2B7259BB27E212E4000457DD /* Database */,
@@ -378,10 +380,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Drawing.io/Drawing.io.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Drawing.io/Preview Content\"";
-				DEVELOPMENT_TEAM = WH76HMN937;
+				DEVELOPMENT_TEAM = E5ZZ8MJF58;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -407,10 +410,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Drawing.io/Drawing.io.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Drawing.io/Preview Content\"";
-				DEVELOPMENT_TEAM = WH76HMN937;
+				DEVELOPMENT_TEAM = E5ZZ8MJF58;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

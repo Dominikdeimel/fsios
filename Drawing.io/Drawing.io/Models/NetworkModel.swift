@@ -59,9 +59,9 @@ struct NetworkModel {
     }
     
     func postInitalData(_ imageAsBase64: String, _ word: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: "http://localhost:3000/game/initial/drawing")!
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
-        let userName = UserDefaults.standard.string(forKey: "userName") ?? "Missing userName"
+        let url = URL(string: urls.game_initial_drawing)!
+        let userId = UserDefaults.standard.string(forKey: userPrefs.userId) ?? errorMessages.missingUserId
+        let userName = UserDefaults.standard.string(forKey: userPrefs.username) ?? errorMessages.missingUserName
                
         let userImage = InitialUserImage(userId: userId, gameId: "", userName: userName, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
@@ -80,7 +80,7 @@ struct NetworkModel {
     }
     
     func postData(_ imageAsBase64: String, _ word: String, _ gameId: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: "http://localhost:3000/game/drawing")!
+        let url = URL(string: urls.game_drawing)!
 
         let userImage = UserImage(gameId: gameId, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
@@ -116,7 +116,8 @@ struct NetworkModel {
     
     func generateUserId(_ name: String) -> AnyPublisher<String?, Never> {
         let url = URL(string: urls.id)!
-        let userName = UserName(name: name)
+        let deviceToken = UserDefaults.standard.string(forKey: userPrefs.deviceToken) ?? errorMessages.deviceToken
+        let userName = UserInfo(name: name, deviceToken: deviceToken)
         var request = URLRequest(url: url)
         
         
@@ -133,13 +134,15 @@ struct NetworkModel {
     }
 }
 private struct Urls {
-    let game_guessing = "http://localhost:3000/game/guessing"
-    let game_all = "http://localhost:3000/game/all"
-    let word = "http://localhost:3000/word"
-    let game_initial_drawing = "http://localhost:3000/game/initial/drawing"
-    let game_drawing = "http://localhost:3000/game/drawing"
-    let finishRound = "http://localhost:3000/game/finishround"
-    let id = "http://localhost:3000/id"
+    //static let baseUrl = "http://192.168.178.29:3000"
+    static let baseUrl = "http://localhost:3000"
+    let game_guessing = "\(baseUrl)/game/guessing"
+    let game_all = "\(baseUrl)/game/all"
+    let word = "\(baseUrl)/word"
+    let game_initial_drawing = "\(baseUrl)/game/initial/drawing"
+    let game_drawing = "\(baseUrl)/game/drawing"
+    let finishRound = "\(baseUrl)/game/finishround"
+    let id = "\(baseUrl)/id"
 }
 
 struct RoundInformation : Codable {
@@ -161,8 +164,9 @@ struct UserImage: Codable {
     let word: String
 }
 
-struct UserName: Codable {
+struct UserInfo: Codable {
     let name: String
+    let deviceToken: String
 }
 
 struct Game: Codable {

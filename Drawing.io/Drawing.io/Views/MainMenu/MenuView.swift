@@ -45,6 +45,7 @@ struct MenuView: View {
             }.navigationTitle("Drawing.io")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
+                    UIApplication.shared.registerForRemoteNotifications()
                     let userId = UserDefaults.standard.string(forKey: "userId")
                     if(userId == nil) {
                         showLoginScreen.toggle()
