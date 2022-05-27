@@ -25,7 +25,8 @@ class ViewModel: ObservableObject {
     @Published var score = ""
     @Published var games = Array<Game>()
     @Published var showNoConnectionAlert = false
-    
+    @Published var gameExists = false
+
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -43,6 +44,7 @@ class ViewModel: ObservableObject {
             }
             self.currentGame = game
             self.given = game.word
+            self.gameExists = true
         })
     }
     
