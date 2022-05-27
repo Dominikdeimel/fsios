@@ -191,7 +191,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					2B14E69927CE2BA90048502D = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -251,7 +251,6 @@
 				2B14E6AE27CE2F9C0048502D /* NetworkModel.swift in Sources */,
 				8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */,
 				2BD3837C27F479F200249E0C /* LoginView.swift in Sources */,
-				2B14E6AE27CE2F9C0048502D /* NetworkModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
