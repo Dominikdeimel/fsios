@@ -15,6 +15,8 @@ struct DrawingView: View {
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
+    @State private var goBack = false
+    
     let gameId: String?
     
     var body: some View {
@@ -24,6 +26,7 @@ struct DrawingView: View {
                     .font(.headline)
                     .padding(.horizontal)
                 Spacer()
+                NavigationLink(destination: LoadGameView(), isActive: self.$goBack) { EmptyView() }
                 Button(action: {
                     submitAlert = true
                 }, label: {
@@ -40,9 +43,9 @@ struct DrawingView: View {
                                         } else {
                                             viewModel.postData(image, gameId)
                                         }
-                                        
-                                        presentationMode.wrappedValue.dismiss()
-                                    },
+                                        self.goBack = true
+                            }
+                            ,
                             secondaryButton: .cancel()
                         )
                     }

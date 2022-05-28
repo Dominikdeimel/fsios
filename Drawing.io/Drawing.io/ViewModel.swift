@@ -13,15 +13,20 @@ import CoreData
 class ViewModel: ObservableObject {
     private var networkModel = NetworkModel()
     private var databaseModel = DatabaseModel()
+    private let userPrefs = UserPreferencesKeys()
+    private let errorMessages = ErrorMessages()
     
     private var getCancellable: AnyCancellable?
     private var postCancellable: AnyCancellable?
-    private var currentGame: Game?
     
+    @Published var currentGame: Game?
     @Published var image = UIImage()
     @Published var given = ""
     @Published var score = ""
     @Published var games = Array<Game>()
+    @Published var showNoConnectionAlert = false
+    @Published var gameExists = false
+
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -39,6 +44,7 @@ class ViewModel: ObservableObject {
             }
             self.currentGame = game
             self.given = game.word
+            self.gameExists = true
         })
     }
     
@@ -61,49 +67,66 @@ class ViewModel: ObservableObject {
     func postData(_ image: UIImage, _ gameId: String? = nil) {
         self.postCancellable?.cancel()
         if(gameId == nil){
-            self.postCancellable =  networkModel.postInitalData(image, given).sink(receiveCompletion: {
-                err in
-                switch err {
+            self.postCancellable =  networkModel.postInitalData(getImageAsBase64(image), given).sink(receiveCompletion: {
+                result in
+                switch result {
                 case .finished:
                     break
                 case .failure(_):
-                    self.databaseModel.createFailedImagePost(image, (gameId != nil) ? gameId! : "" , self.context)
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.initialDataPost, gameId: "", image: image, word: self.given, self.context)
                 }
             }, receiveValue: {code in
                 if code != 200 {
-                    //self.databaseModel.createFailedImagePost(image, gameId, self.context)
-                    print("Error while posting")
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.initialDataPost, gameId: "", image: image, word: self.given, self.context)
                 }
             })
         } else {
-            self.postCancellable = networkModel.postData(image, given, (gameId != nil) ? gameId! : "").sink(receiveCompletion: { _ in
+            self.postCancellable = networkModel.postData(getImageAsBase64(image), given, (gameId != nil) ? gameId! : "").sink(receiveCompletion: {
+                result in
+                switch result {
+                case .finished:
+                    break
+                case .failure(_):
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.dataPost, gameId: gameId ?? "", image: image, word: self.given, self.context)
+                }
             }, receiveValue: {code in
                 if code != 200 {
-                    //self.databaseModel.createFailedImagePost(image, gameId, self.context)
-                    print("Error while posting")
+                    self.databaseModel.createFailedRequests(requestType: FailedRequestType.dataPost, gameId: gameId ?? "", image: image, word: self.given, self.context)
                 }
             })
         }
     }
     
-    func retryPostData(_ failedImagePost: FailedImagePost){
+    func retryFailedRequest(_ failedRequest: FailedRequest){
         self.postCancellable?.cancel()
-        let imageAsBase64 = failedImagePost.imageAsBase64 ?? "Missing image data"
-        let gameId = failedImagePost.gameId ?? "Missing gameId"
         
-        self.postCancellable = networkModel.retryPostImage(imageAsBase64, gameId, given).sink(receiveCompletion: { _ in
-        }, receiveValue: {statuscode in
-            if statuscode == 200 {
-                self.databaseModel.deleteFailedImagePost(failedImagePost, self.context)
-            }
-        })
+        switch failedRequest.type {
+        case "initialPostData":
+            self.postCancellable = networkModel.postInitalData(failedRequest.imageAsBase64!, failedRequest.word!).sink(receiveCompletion: { _ in
+            }, receiveValue: {statuscode in
+                if(statuscode == 200){
+                    self.databaseModel.deleteFailedImagePost(failedRequest, self.context)
+                }            })
+        case "postData":
+            self.postCancellable = networkModel.postData(failedRequest.imageAsBase64!, failedRequest.word!, failedRequest.gameId!).sink(receiveCompletion: { _ in
+            }, receiveValue: {statuscode in
+                if(statuscode == 200){
+                    self.databaseModel.deleteFailedImagePost(failedRequest, self.context)
+                }            })
+        default: print("Nicht definierter failedRequestType")
+        }
+        
     }
     
     func generateUserId(_ name: String){
         self.postCancellable?.cancel()
-        self.postCancellable = networkModel.generateUserId(name).sink(receiveValue: { id in
-            UserDefaults.standard.set(id, forKey: "userId")
-        })
+        self.postCancellable = networkModel.generateUserId(name).sink { id in
+            if(id != nil){
+                UserDefaults.standard.set(id, forKey: "userId")
+            } else {
+                self.showNoConnectionAlert = true
+            }
+        }
     }
     
     func matchWords(_ guessed: String, _ wordData: String) -> Bool {

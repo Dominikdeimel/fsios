@@ -18,11 +18,12 @@ struct NavigationLazyView<Content: View>: View {
 }
 
 struct LoadGameView: View {
-    
     @EnvironmentObject var viewModel: ViewModel
+    private let errorMessages = ErrorMessages()
+
         
     var body: some View {
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId!"
+        let userId = UserDefaults.standard.string(forKey: "userId") ?? errorMessages.missingUserId
         
         return List(viewModel.games, id: \.gameId) { game in
             if(userId == game.activeUser){
@@ -39,6 +40,9 @@ struct LoadGameView: View {
                 content(userId: userId, game: game)
             }
         }.onAppear {
+            viewModel.getAllGamesByUserId()
+        }
+        .refreshable {
             viewModel.getAllGamesByUserId()
         }
     }

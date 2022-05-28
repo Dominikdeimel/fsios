@@ -10,10 +10,13 @@ import SwiftUI
 import Combine
 
 struct NetworkModel {
+    private let urls = Urls()
+    private let errorMessages = ErrorMessages()
+    private let userPrefs = UserPreferencesKeys()
     
     func getGame(_ gameId: String?) -> AnyPublisher<Game, Error> {
-        var url = URLComponents(string: "http://localhost:3000/game/guessing")!
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
+        var url = URLComponents(string: urls.game_guessing)!
+        let userId = UserDefaults.standard.string(forKey: userPrefs.userId) ?? errorMessages.missingUserId
 
         url.queryItems = [
             URLQueryItem(name: "userId", value: userId),
@@ -29,8 +32,8 @@ struct NetworkModel {
     }
     
     func getAllGamesByUserId() -> AnyPublisher<Array<Game>, Error> {
-        var url = URLComponents(string: "http://localhost:3000/game/all")!
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
+        var url = URLComponents(string: urls.game_all)!
+        let userId = UserDefaults.standard.string(forKey: userPrefs.userId) ?? errorMessages.missingUserId
 
         url.queryItems = [
             URLQueryItem(name: "userId", value: userId)
@@ -47,7 +50,7 @@ struct NetworkModel {
     
     
     func getRandomWord() -> AnyPublisher<String?, Never> {
-        let url = URL(string: "http://localhost:3000/word")!
+        let url = URL(string: urls.word)!
         return URLSession.shared.dataTaskPublisher(for: url)
             .map { String(data: $0.data, encoding: .utf8) }
             .replaceError(with: nil)
@@ -55,14 +58,11 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func postInitalData(_ image: UIImage, _ word: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: "http://localhost:3000/game/initial/drawing")!
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId"
-        let userName = UserDefaults.standard.string(forKey: "userName") ?? "Missing userName"
-        
-        let imageData = image.jpegData(compressionQuality: 1)
-        let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
-       
+    func postInitalData(_ imageAsBase64: String, _ word: String) -> AnyPublisher<Int, URLError> {
+        let url = URL(string: urls.game_initial_drawing)!
+        let userId = UserDefaults.standard.string(forKey: userPrefs.userId) ?? errorMessages.missingUserId
+        let userName = UserDefaults.standard.string(forKey: userPrefs.username) ?? errorMessages.missingUserName
+               
         let userImage = InitialUserImage(userId: userId, gameId: "", userName: userName, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
@@ -79,11 +79,9 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func postData(_ image: UIImage, _ word: String, _ gameId: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: "http://localhost:3000/game/drawing")!
-        let imageData = image.jpegData(compressionQuality: 1)
-        let imageAsBase64 = imageData?.base64EncodedString() ?? "Missing image data"
-       
+    func postData(_ imageAsBase64: String, _ word: String, _ gameId: String) -> AnyPublisher<Int, URLError> {
+        let url = URL(string: urls.game_drawing)!
+
         let userImage = UserImage(gameId: gameId, imageAsBase64: imageAsBase64, word: word)
         let encodedUserImage = try! JSONEncoder().encode(userImage)
         
@@ -100,30 +98,8 @@ struct NetworkModel {
             .eraseToAnyPublisher()
     }
     
-    func retryPostImage(_ imageAsBase64: String, _ gameId: String, _ word: String) -> AnyPublisher<Int, URLError> {
-        let url = URL(string: "http://localhost:3000/game/initial/drawing")!
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? "Missing userId!"
-        let userName = UserDefaults.standard.string(forKey: "userName") ?? "Missing userName!"
-
-        let userImage = InitialUserImage(userId: userId, gameId: gameId, userName: userName, imageAsBase64: imageAsBase64, word: word)
-        let encodedUserImage = try! JSONEncoder().encode(userImage)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = encodedUserImage
-        
-        return URLSession.shared.dataTaskPublisher(for: request)
-            . map {
-                let response = $0.response as! HTTPURLResponse
-                return response.statusCode
-                }
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
-    
     func postRoundInformation(roundScore: Int, gameId: String) -> AnyPublisher<String, URLError> {
-        let url = URL(string: "http://localhost:3000/game/finishround")!
+        let url = URL(string: urls.finishRound)!
         let roundInformation = RoundInformation(gameId: gameId, roundScore: roundScore)
         let encodedRoundInformation = try! JSONEncoder().encode(roundInformation)
 
@@ -139,8 +115,9 @@ struct NetworkModel {
     }
     
     func generateUserId(_ name: String) -> AnyPublisher<String?, Never> {
-        let url = URL(string: "http://localhost:3000/id")!
-        let userName = UserName(name: name)
+        let url = URL(string: urls.id)!
+        let deviceToken = UserDefaults.standard.string(forKey: userPrefs.deviceToken) ?? errorMessages.deviceToken
+        let userName = UserInfo(name: name, deviceToken: deviceToken)
         var request = URLRequest(url: url)
         
         
@@ -155,6 +132,17 @@ struct NetworkModel {
             .replaceError(with: nil)
             .eraseToAnyPublisher()
     }
+}
+private struct Urls {
+    //static let baseUrl = "http://192.168.178.29:3000"
+    static let baseUrl = "http://localhost:3000"
+    let game_guessing = "\(baseUrl)/game/guessing"
+    let game_all = "\(baseUrl)/game/all"
+    let word = "\(baseUrl)/word"
+    let game_initial_drawing = "\(baseUrl)/game/initial/drawing"
+    let game_drawing = "\(baseUrl)/game/drawing"
+    let finishRound = "\(baseUrl)/game/finishround"
+    let id = "\(baseUrl)/id"
 }
 
 struct RoundInformation : Codable {
@@ -176,8 +164,9 @@ struct UserImage: Codable {
     let word: String
 }
 
-struct UserName: Codable {
+struct UserInfo: Codable {
     let name: String
+    let deviceToken: String
 }
 
 struct Game: Codable {

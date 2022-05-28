@@ -65,6 +65,9 @@ struct GuessingView: View {
                     Text("Punkte: " + String(self.roundScore))
                     Text("Gesamt: " + viewModel.score)
                     ConfettiCannon(counter: $counter)
+                    NavigationLink(destination: DrawingView(gameId: viewModel.currentGame?.gameId)) {
+                        CoolButton(buttonText: "Draw")
+                    }
                 }
                 .padding()
                 .onTapGesture {
