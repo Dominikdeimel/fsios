@@ -10,7 +10,6 @@ import CoreData
 
 struct NewGameView: View {
     
-    
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.managedObjectContext) var context
     @State private var noGame = false
@@ -19,12 +18,11 @@ struct NewGameView: View {
     var body: some View {
             VStack {
                 Spacer()
-                NavigationLink(destination: DrawingView(gameId: nil)) {
+                NavigationLink(destination: GameView(gameId: nil, state: 1)) {
                     CoolButton(buttonText: "Draw")
-
                 }
                 Spacer()
-                NavigationLink(destination: GuessingView(gameId: nil), isActive: $gameExists) {
+                NavigationLink(destination: GameView(gameId: nil, state: 2), isActive: $gameExists) {
                     CoolButton(buttonText: "Guess").onTapGesture {
                         viewModel.loadGame(nil)
                         if(viewModel.gameExists) {

@@ -17,7 +17,7 @@ struct DrawingView: View {
     @State private var clearAlert = false
     @State private var goBack = false
     
-    let gameId: String?
+    @State var gameId: String?
     
     var body: some View {
         VStack {
@@ -88,8 +88,8 @@ struct DrawingView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        DrawingView(gameId: nil)
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DrawingView(gameId: nil)
+//    }
+//}

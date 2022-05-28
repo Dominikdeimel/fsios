@@ -28,11 +28,11 @@ struct LoadGameView: View {
         return List(viewModel.games, id: \.gameId) { game in
             if(userId == game.activeUser){
                 if(game.state == 1){
-                    NavigationLink(destination: DrawingView(gameId: game.gameId)) {
+                    NavigationLink(destination: GameView(gameId: game.gameId, state: game.state)) {
                         content(userId: userId, game: game)
                     }
                 } else if(game.state == 2){
-                    NavigationLink(destination: NavigationLazyView(GuessingView(gameId: game.gameId))) {
+                    NavigationLink(destination: NavigationLazyView(GameView(gameId: game.gameId, state: game.state))) {
                         content(userId: userId, game: game)
                     }
                 }
@@ -71,6 +71,7 @@ struct LoadGameView: View {
             }
         }
     }
+    
 }
 
 struct LoadGameView_Previews: PreviewProvider {
