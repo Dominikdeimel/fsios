@@ -23,6 +23,7 @@ struct DrawingView: View {
         VStack {
             HStack {
                 Text(viewModel.given)
+                    .font(.headline)
                     .padding(.horizontal)
                 Spacer()
                 NavigationLink(destination: LoadGameView(), isActive: self.$goBack) { EmptyView() }

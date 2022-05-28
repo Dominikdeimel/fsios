@@ -21,10 +21,9 @@ struct GuessingView: View {
     var body: some View {
         if(!showScore){
             VStack {
-                Image(uiImage: viewModel.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .border(.gray)
+                    Image(uiImage: viewModel.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 TextField(
                     "Wort",
                     text: $word
@@ -32,8 +31,7 @@ struct GuessingView: View {
                 .focused($fieldIsFocused)
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
-                .border(.secondary)
-                Button("Submit") {
+                Button("Raten") {
                     if (viewModel.matchWords(word, viewModel.given)) {
                         showScore = true
                     } else {
@@ -57,13 +55,15 @@ struct GuessingView: View {
         } else {
             ZStack {
                 VStack {
-                    Text(viewModel.given)
-                    Image(uiImage: viewModel.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .border(.gray)
-                    Text("Score: " + String(self.roundScore))
-                    Text("Gesamtscore: " + viewModel.score)
+                    Text(viewModel.given + " war richtig!")
+                        .font(.title2)
+                        Image(uiImage: viewModel.image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.horizontal)
+                            .padding(.vertical)
+                    Text("Punkte: " + String(self.roundScore))
+                    Text("Gesamt: " + viewModel.score)
                     ConfettiCannon(counter: $counter)
                     NavigationLink(destination: DrawingView(gameId: viewModel.currentGame?.gameId)) {
                         CoolButton(buttonText: "Draw")

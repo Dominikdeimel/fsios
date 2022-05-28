@@ -20,12 +20,12 @@ struct NewGameView: View {
             VStack {
                 Spacer()
                 NavigationLink(destination: DrawingView(gameId: nil)) {
-                    CoolButton(buttonText: "Draw")
+                    CoolButton(buttonText: "Zeichnen")
 
                 }
                 Spacer()
                 NavigationLink(destination: GuessingView(gameId: nil), isActive: $gameExists) {
-                    CoolButton(buttonText: "Guess").onTapGesture {
+                    CoolButton(buttonText: "Raten").onTapGesture {
                         viewModel.loadGame(nil)
                         if(viewModel.gameExists) {
                             gameExists = true
