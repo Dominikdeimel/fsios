@@ -9,15 +9,15 @@ import SwiftUI
 import PencilKit
 
 struct DrawingView: View {
+    
+    let gameId: String?
+    @Binding var showView: Int
+    
     @Environment(\.undoManager) private var undoManager
-    @Environment(\.presentationMode) private var presentationMode
     @State var drawingController = DrawingViewController()
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
-    @State private var goBack = false
-    
-    @State var gameId: String?
     
     var body: some View {
         VStack {
@@ -25,29 +25,36 @@ struct DrawingView: View {
                 Text(viewModel.given)
                     .padding(.horizontal)
                 Spacer()
-                NavigationLink(destination: LoadGameView(), isActive: self.$goBack) { EmptyView() }
                 Button(action: {
-                    submitAlert = true
+//                    submitAlert = true
+//                    let image = drawingController.saveImg()
+//                    if(gameId == nil){
+//                        viewModel.postData(image)
+//                    } else {
+//                        viewModel.postData(image, gameId)
+//                    }
+                    showView = 0
                 }, label: {
                     Image(systemName: "checkmark")
                 })
-                    .alert(isPresented:$submitAlert) {
-                        Alert(
-                            title: Text("Fertig?"),
-                            primaryButton:
-                                    .default(Text("Ja")) {
-                                        let image = drawingController.saveImg()
-                                        if(gameId == nil){
-                                            viewModel.postData(image)
-                                        } else {
-                                            viewModel.postData(image, gameId)
-                                        }
-                                        self.goBack = true
-                            }
-                            ,
-                            secondaryButton: .cancel()
-                        )
-                    }
+//                    .alert(isPresented:$submitAlert) {
+//                        Alert(
+//                            title: Text("Fertig?"),
+//                            primaryButton:
+//                                    .default(Text("Ja")) {
+//                                        let image = drawingController.saveImg()
+//                                        if(gameId == nil){
+//                                            viewModel.postData(image)
+//                                        } else {
+//                                            viewModel.postData(image, gameId)
+//                                        }
+//                                        fatalError()
+//                                        showView = 0
+//                            }
+//                            ,
+//                            secondaryButton: .cancel()
+//                        )
+//                    }
                     .padding(.horizontal)
             }
             .padding(.vertical)

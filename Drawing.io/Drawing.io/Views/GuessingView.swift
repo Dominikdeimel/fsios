@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GuessingView: View {
 
-    @Binding var gameId: String?
-    @Binding var state: Int
+    let gameId: String?
+    @Binding var showView: Int
     @Binding var roundScore: Int
     
     @State private var word: String = ""
@@ -31,11 +31,11 @@ struct GuessingView: View {
                 .focused($fieldIsFocused)
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
-                .underlineTextField()
+                //.underlineTextField()
                 CoolButton(buttonText: "Raten")
                     .onTapGesture {
                     if (viewModel.matchWords(word, viewModel.given)) {
-                        state = 3
+                        showView = 3
                     } else {
                         if(roundScore > 1){
                             roundScore -= 1

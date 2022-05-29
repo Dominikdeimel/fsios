@@ -18,11 +18,11 @@ struct NewGameView: View {
     var body: some View {
             VStack {
                 Spacer()
-                NavigationLink(destination: GameView(gameId: nil, state: 1)) {
+                NavigationLink(destination: GameView(gameId: nil, showView: 1)) {
                     CoolButton(buttonText: "Draw")
                 }
                 Spacer()
-                NavigationLink(destination: GameView(gameId: nil, state: 2), isActive: $gameExists) {
+                NavigationLink(destination: GameView(gameId: nil, showView: 2), isActive: $gameExists) {
                     CoolButton(buttonText: "Guess").onTapGesture {
                         viewModel.loadGame(nil)
                         if(viewModel.gameExists) {

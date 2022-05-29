@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ScoreView: View {
     
-    @Binding var gameId: String?
-    @Binding var state: Int
+    let gameId: String?
+    @Binding var showView: Int
     @Binding var roundScore: Int
     
     @State var counter: Int = 1
@@ -28,7 +28,7 @@ struct ScoreView: View {
                 Text("Gesamtscore: " + viewModel.score)
                 ConfettiCannon(counter: $counter)
                 CoolButton(buttonText: "Draw").onTapGesture {
-                    state = 1
+                    showView = 1
                     gameId = viewModel.currentGame?.gameId 
                 }
             }

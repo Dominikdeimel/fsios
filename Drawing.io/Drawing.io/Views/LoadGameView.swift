@@ -18,36 +18,40 @@ struct NavigationLazyView<Content: View>: View {
 }
 
 struct LoadGameView: View {
+    
+    @State var gameId: String?
+    @Binding var showView: Int
+    
     @EnvironmentObject var viewModel: ViewModel
     private let errorMessages = ErrorMessages()
-
-        
+    
+    
     var body: some View {
         let userId = UserDefaults.standard.string(forKey: "userId") ?? errorMessages.missingUserId
-        
-        return List(viewModel.games, id: \.gameId) { game in
-            if(userId == game.activeUser){
-                if(game.state == 1){
-                    NavigationLink(destination: GameView(gameId: game.gameId, state: game.state)) {
-                        content(userId: userId, game: game)
-                    }
-                } else if(game.state == 2){
-                    NavigationLink(destination: NavigationLazyView(GameView(gameId: game.gameId, state: game.state))) {
-                        content(userId: userId, game: game)
-                    }
+//        if(!viewModel.games.isEmpty) {
+            return List(viewModel.games, id: \.gameId) { game in
+                if(userId == game.activeUser){
+                    content(userId: userId, game: game)
+                        .onTapGesture {
+                            showView = game.state
+                            gameId = game.gameId
+                        }
+                } else {
+                    content(userId: userId, game: game)
                 }
-            } else {
-                content(userId: userId, game: game)
+            }.onAppear {
+                viewModel.getAllGamesByUserId()
             }
-        }.onAppear {
-            viewModel.getAllGamesByUserId()
-        }
-        .refreshable {
-            viewModel.getAllGamesByUserId()
-        }
+            .refreshable {
+                viewModel.getAllGamesByUserId()
+            }
+//        } else {
+//            return Text("Aktuell keine laufenden Spiele")
+//                .font(.headline)
+//        }
     }
-            
-        
+    
+    
     func content(userId: String, game: Game) -> some View {
         let otherPlayer: String
         if(userId == game.userId_0) {
@@ -74,8 +78,8 @@ struct LoadGameView: View {
     
 }
 
-struct LoadGameView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoadGameView()
-    }
-}
+//struct LoadGameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoadGameView(gameId: nil, showView: 0)
+//    }
+//}
