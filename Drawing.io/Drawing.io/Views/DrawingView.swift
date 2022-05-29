@@ -9,15 +9,15 @@ import SwiftUI
 import PencilKit
 
 struct DrawingView: View {
+    
+    @Binding var gameId: String?
+    @Binding var showView: Int
+    
     @Environment(\.undoManager) private var undoManager
-    @Environment(\.presentationMode) private var presentationMode
     @State var drawingController = DrawingViewController()
     @EnvironmentObject var viewModel: ViewModel
     @State private var submitAlert = false
     @State private var clearAlert = false
-    @State private var goBack = false
-    
-    let gameId: String?
     
     var body: some View {
         VStack {
@@ -26,7 +26,6 @@ struct DrawingView: View {
                     .font(.headline)
                     .padding(.horizontal)
                 Spacer()
-                NavigationLink(destination: LoadGameView(), isActive: self.$goBack) { EmptyView() }
                 Button(action: {
                     submitAlert = true
                 }, label: {
@@ -43,8 +42,8 @@ struct DrawingView: View {
                                         } else {
                                             viewModel.postData(image, gameId)
                                         }
-                                        self.goBack = true
-                            }
+                                        showView = 0
+                                    }
                             ,
                             secondaryButton: .cancel()
                         )
@@ -89,8 +88,8 @@ struct DrawingView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        DrawingView(gameId: nil)
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DrawingView(gameId: nil)
+//    }
+//}

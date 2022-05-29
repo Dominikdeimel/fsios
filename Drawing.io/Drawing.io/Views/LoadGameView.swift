@@ -18,26 +18,27 @@ struct NavigationLazyView<Content: View>: View {
 }
 
 struct LoadGameView: View {
+    
+    @Binding var gameId: String?
+    @Binding var showView: Int
+    
     @EnvironmentObject var viewModel: ViewModel
     private let errorMessages = ErrorMessages()
     
-    
     var body: some View {
         let userId = UserDefaults.standard.string(forKey: "userId") ?? errorMessages.missingUserId
-        
+        //        if(!viewModel.games.isEmpty) {
         return List(viewModel.games, id: \.gameId) { game in
-            if(userId == game.activeUser){
-                if(game.state == 1){
-                    NavigationLink(destination: DrawingView(gameId: game.gameId)) {
-                        content(userId: userId, game: game)
-                    }
-                } else if(game.state == 2){
-                    NavigationLink(destination: NavigationLazyView(GuessingView(gameId: game.gameId))) {
-                        content(userId: userId, game: game)
-                    }
-                }
-            } else {
+            HStack {
                 content(userId: userId, game: game)
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if(userId == game.activeUser) {
+                    showView = game.state
+                    gameId = game.gameId
+                }
             }
         }.onAppear {
             viewModel.getAllGamesByUserId()
@@ -45,6 +46,10 @@ struct LoadGameView: View {
         .refreshable {
             viewModel.getAllGamesByUserId()
         }
+        //        } else {
+        //            return Text("Aktuell keine laufenden Spiele")
+        //                .font(.headline)
+        //        }
     }
     
     
@@ -101,10 +106,11 @@ struct LoadGameView: View {
         }
         }
     }
+    
 }
 
-struct LoadGameView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoadGameView()
-    }
-}
+//struct LoadGameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoadGameView(gameId: nil, showView: 0)
+//    }
+//}

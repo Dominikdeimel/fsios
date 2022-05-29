@@ -8,90 +8,56 @@
 import SwiftUI
 
 struct GuessingView: View {
+    
+    @Binding var gameId: String?
+    @Binding var showView: Int
+    @Binding var roundScore: Int
+    
     @State private var word: String = ""
     @State var notMatchedAlert = false
-    @State var showScore = false
-    @State var roundScore = 5
-    @State var counter: Int = 1
-    var gameId: String? = nil
     
     @FocusState private var fieldIsFocused: Bool
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
-        if(!showScore){
-            VStack {
-                Image(uiImage: viewModel.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                TextField(
-                    "Wort",
-                    text: $word
-                )
-                    .focused($fieldIsFocused)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .underlineTextField()
-                CoolButton(buttonText: "Raten")
-                    .onTapGesture {
-                        if (viewModel.matchWords(word, viewModel.given)) {
-                            showScore = true
-                        } else {
-                            if(roundScore > 1){
-                                roundScore -= 1
-                            }
-                            notMatchedAlert = true
-                            word = ""
+        VStack {
+            Image(uiImage: viewModel.image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            TextField(
+                "Wort",
+                text: $word
+            )
+                .focused($fieldIsFocused)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
+                .underlineTextField()
+            CoolButton(buttonText: "Raten")
+                .onTapGesture {
+                    if (viewModel.matchWords(word, viewModel.given)) {
+                        showView = 3
+                    } else {
+                        if(roundScore > 1){
+                            roundScore -= 1
                         }
                     }
-                    .alert(isPresented: $notMatchedAlert) {
-                        Alert(
-                            title: Text("Falsches Wort"),
-                            dismissButton: .default(Text("Nochmal versuchen"))
-                        )
-                    }
-            } .padding()
-                .onAppear {
-                    viewModel.loadGame(gameId)
                 }
-        } else {
-            ZStack {
-                VStack {
-                    Text(viewModel.given + " war richtig!")
-                        .font(.title2)
-                    Image(uiImage: viewModel.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(.horizontal)
-                        .padding(.vertical)
-                    Text("Punkte: " + String(self.roundScore))
-                    Text("Gesamt: " + viewModel.score)
-                    ConfettiCannon(counter: $counter)
-                    NavigationLink(destination: DrawingView(gameId: viewModel.currentGame?.gameId)) {
-                        CoolButton(buttonText: "Draw")
-                    }
+                .alert(isPresented: $notMatchedAlert) {
+                    Alert(
+                        title: Text("Falsches Wort"),
+                        dismissButton: .default(Text("Nochmal versuchen"))
+                    )
                 }
-                .padding()
-                .onTapGesture {
-                    counter += 1
-                }
-                ConfettiCannon(counter: $counter)
+        } .padding()
+        .onAppear {
+                viewModel.loadGame(gameId)
             }
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    counter += 1
-                }
-                
-                viewModel.finishRound(self.roundScore)
-            }
-        }
     }
-    
 }
 
 
-struct GuessingView_Previews: PreviewProvider {
-    static var previews: some View {
-        GuessingView(gameId: nil)
-    }
-}
+//struct GuessingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GuessingView(gameId: nil)
+//    }
+//}
