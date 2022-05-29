@@ -23,6 +23,7 @@ struct DrawingView: View {
         VStack {
             HStack {
                 Text(viewModel.given)
+                    .font(.headline)
                     .padding(.horizontal)
                 Spacer()
                 Button(action: {

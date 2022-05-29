@@ -34,17 +34,18 @@ struct MenuView: View {
                 Image("Logo").padding(.bottom).scaleEffect(0.2).frame(width: 50.0, height: 250.0)
                 Spacer()
                 NavigationLink(destination: NewGameView()) {
-                    CoolButton(buttonText: "New Game")
+                    CoolButton(buttonText: "Neues Spiel")
                 }
                 .padding(.vertical)
                 NavigationLink(destination: GameView(gameId: nil, showView: 0, roundScore: 0)) {
-                    CoolButton(buttonText: "Load Game")
+                    CoolButton(buttonText: "Spiel laden")
                 }
                 .padding(.top)
                 Spacer()
-            }.navigationTitle("Drawing.io")
+            }.navigationTitle("")
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear {
+                    UIApplication.shared.registerForRemoteNotifications()
                     let userId = UserDefaults.standard.string(forKey: "userId")
                     if(userId == nil) {
                         showLoginScreen.toggle()

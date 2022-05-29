@@ -31,7 +31,7 @@ struct GuessingView: View {
                 .focused($fieldIsFocused)
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
-            //.underlineTextField()
+                .underlineTextField()
             CoolButton(buttonText: "Raten")
                 .onTapGesture {
                     if (viewModel.matchWords(word, viewModel.given)) {
@@ -40,8 +40,6 @@ struct GuessingView: View {
                         if(roundScore > 1){
                             roundScore -= 1
                         }
-                        notMatchedAlert = true
-                        word = ""
                     }
                 }
                 .alert(isPresented: $notMatchedAlert) {
@@ -51,7 +49,7 @@ struct GuessingView: View {
                     )
                 }
         } .padding()
-            .onAppear {
+        .onAppear {
                 viewModel.loadGame(gameId)
             }
     }

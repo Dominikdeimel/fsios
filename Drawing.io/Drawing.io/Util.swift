@@ -29,10 +29,12 @@ struct ErrorMessages {
     let missingUserName = "Missing userName"
     let missingImageData = "Missing imageData"
     let missingGameId = "Missing gameId"
+    let deviceToken = ""
     let posting = "Error while posting"
 }
 
 struct UserPreferencesKeys {
     let userId = "userId"
     let username = "userName"
+    let deviceToken = "deviceToken"
 }
