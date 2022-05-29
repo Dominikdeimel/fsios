@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameView: View {
-    let gameId: String?
+    @State var gameId: String?
     @State var showView: Int = 0
     @State var roundScore: Int = 5
     
@@ -17,24 +17,21 @@ struct GameView: View {
     var body: some View {
         switch showView {
         case 0:
-            LoadGameView(gameId: gameId, showView: $showView)
-                .onAppear {
-                    viewModel.getAllGamesByUserId()
-                }
+            LoadGameView(gameId: $gameId, showView: $showView)
         case 1:
-            DrawingView(gameId: gameId, showView: $showView)
+            DrawingView(gameId: $gameId, showView: $showView)
         case 2:
-            GuessingView(gameId: gameId, showView: $showView, roundScore: $roundScore)
+            GuessingView(gameId: $gameId, showView: $showView, roundScore: $roundScore)
         case 3:
-            ScoreView(gameId: gameId, showView: $showView, roundScore: $roundScore)
+            ScoreView(gameId: $gameId, showView: $showView, roundScore: $roundScore)
         default:
             EmptyView()
         }
-}
-}
-    
-    struct GameView_Previews: PreviewProvider {
-        static var previews: some View {
-            GameView(gameId: nil, showView: 0, roundScore: 0)
-        }
     }
+}
+
+struct GameView_Previews: PreviewProvider {
+    static var previews: some View {
+        GameView(gameId: nil, showView: 0, roundScore: 0)
+    }
+}

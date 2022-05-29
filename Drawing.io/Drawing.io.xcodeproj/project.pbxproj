@@ -28,7 +28,6 @@
 		8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8531DF0927E74CAF00F107DE /* ConfettiView.swift */; };
 		85ACD5292842718C0073E0C7 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ACD5282842718C0073E0C7 /* GameView.swift */; };
 		85ACD52B284272D10073E0C7 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ACD52A284272D10073E0C7 /* ScoreView.swift */; };
-		85ACD52D284281DD0073E0C7 /* UnderlineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ACD52C284281DD0073E0C7 /* UnderlineTextField.swift */; };
 		85D348EC27D7822300FCDC10 /* GuessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D348EB27D7822300FCDC10 /* GuessingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +54,6 @@
 		8531DF0927E74CAF00F107DE /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		85ACD5282842718C0073E0C7 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		85ACD52A284272D10073E0C7 /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
-		85ACD52C284281DD0073E0C7 /* UnderlineTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineTextField.swift; sourceTree = "<group>"; };
 		85D348EB27D7822300FCDC10 /* GuessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,7 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				2BEFDAC82834039200EDC7A2 /* CoolButton.swift */,
-				85ACD52C284281DD0073E0C7 /* UnderlineTextField.swift */,
 			);
 			path = "UI Elements";
 			sourceTree = "<group>";
@@ -262,7 +259,6 @@
 				2B14E6AE27CE2F9C0048502D /* NetworkModel.swift in Sources */,
 				8531DF0A27E74CAF00F107DE /* ConfettiView.swift in Sources */,
 				2BD3837C27F479F200249E0C /* LoginView.swift in Sources */,
-				85ACD52D284281DD0073E0C7 /* UnderlineTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

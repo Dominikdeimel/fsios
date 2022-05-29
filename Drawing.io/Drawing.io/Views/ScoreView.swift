@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScoreView: View {
     
-    let gameId: String?
+    @Binding var gameId: String?
     @Binding var showView: Int
     @Binding var roundScore: Int
     

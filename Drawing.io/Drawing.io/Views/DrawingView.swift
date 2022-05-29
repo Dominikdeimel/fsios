@@ -10,7 +10,7 @@ import PencilKit
 
 struct DrawingView: View {
     
-    let gameId: String?
+    @Binding var gameId: String?
     @Binding var showView: Int
     
     @Environment(\.undoManager) private var undoManager
@@ -26,35 +26,27 @@ struct DrawingView: View {
                     .padding(.horizontal)
                 Spacer()
                 Button(action: {
-//                    submitAlert = true
-//                    let image = drawingController.saveImg()
-//                    if(gameId == nil){
-//                        viewModel.postData(image)
-//                    } else {
-//                        viewModel.postData(image, gameId)
-//                    }
-                    showView = 0
+                    submitAlert = true
                 }, label: {
                     Image(systemName: "checkmark")
                 })
-//                    .alert(isPresented:$submitAlert) {
-//                        Alert(
-//                            title: Text("Fertig?"),
-//                            primaryButton:
-//                                    .default(Text("Ja")) {
-//                                        let image = drawingController.saveImg()
-//                                        if(gameId == nil){
-//                                            viewModel.postData(image)
-//                                        } else {
-//                                            viewModel.postData(image, gameId)
-//                                        }
-//                                        fatalError()
-//                                        showView = 0
-//                            }
-//                            ,
-//                            secondaryButton: .cancel()
-//                        )
-//                    }
+                    .alert(isPresented:$submitAlert) {
+                        Alert(
+                            title: Text("Fertig?"),
+                            primaryButton:
+                                    .default(Text("Ja")) {
+                                        let image = drawingController.saveImg()
+                                        if(gameId == nil){
+                                            viewModel.postData(image)
+                                        } else {
+                                            viewModel.postData(image, gameId)
+                                        }
+                                        showView = 0
+                                    }
+                            ,
+                            secondaryButton: .cancel()
+                        )
+                    }
                     .padding(.horizontal)
             }
             .padding(.vertical)

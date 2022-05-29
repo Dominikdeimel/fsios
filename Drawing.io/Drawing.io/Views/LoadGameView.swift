@@ -19,36 +19,37 @@ struct NavigationLazyView<Content: View>: View {
 
 struct LoadGameView: View {
     
-    @State var gameId: String?
+    @Binding var gameId: String?
     @Binding var showView: Int
     
     @EnvironmentObject var viewModel: ViewModel
     private let errorMessages = ErrorMessages()
     
-    
     var body: some View {
         let userId = UserDefaults.standard.string(forKey: "userId") ?? errorMessages.missingUserId
-//        if(!viewModel.games.isEmpty) {
-            return List(viewModel.games, id: \.gameId) { game in
-                if(userId == game.activeUser){
-                    content(userId: userId, game: game)
-                        .onTapGesture {
-                            showView = game.state
-                            gameId = game.gameId
-                        }
-                } else {
-                    content(userId: userId, game: game)
+        //        if(!viewModel.games.isEmpty) {
+        return List(viewModel.games, id: \.gameId) { game in
+            HStack {
+                content(userId: userId, game: game)
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if(userId == game.activeUser) {
+                    showView = game.state
+                    gameId = game.gameId
                 }
-            }.onAppear {
-                viewModel.getAllGamesByUserId()
             }
-            .refreshable {
-                viewModel.getAllGamesByUserId()
-            }
-//        } else {
-//            return Text("Aktuell keine laufenden Spiele")
-//                .font(.headline)
-//        }
+        }.onAppear {
+            viewModel.getAllGamesByUserId()
+        }
+        .refreshable {
+            viewModel.getAllGamesByUserId()
+        }
+        //        } else {
+        //            return Text("Aktuell keine laufenden Spiele")
+        //                .font(.headline)
+        //        }
     }
     
     
@@ -61,6 +62,9 @@ struct LoadGameView: View {
         }
         
         return VStack (alignment: .leading) {
+            //            Text(game.gameId)
+            //            Text(userId)
+            //            Text(game.activeUser)
             Text("\(otherPlayer) (Runde \(game.rounds))").font(.headline)
             if(userId == game.activeUser) {
                 Text("Du bist dran!").font(.caption).foregroundColor(.red)
