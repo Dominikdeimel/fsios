@@ -20,8 +20,8 @@ struct NavigationLazyView<Content: View>: View {
 struct LoadGameView: View {
     @EnvironmentObject var viewModel: ViewModel
     private let errorMessages = ErrorMessages()
-
-        
+    
+    
     var body: some View {
         let userId = UserDefaults.standard.string(forKey: "userId") ?? errorMessages.missingUserId
         
@@ -46,8 +46,8 @@ struct LoadGameView: View {
             viewModel.getAllGamesByUserId()
         }
     }
-            
-        
+    
+    
     func content(userId: String, game: Game) -> some View {
         let otherPlayer: String
         if(userId == game.userId_0) {
@@ -56,8 +56,37 @@ struct LoadGameView: View {
             otherPlayer = game.userName_0
         }
         
-        return VStack (alignment: .leading) {
-            Text("\(otherPlayer) (Runde \(game.rounds))").font(.headline)
+        return HStack {
+            if(userId == game.activeUser) {
+                Image(systemName: "exclamationmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 32)
+                    .foregroundColor(.green)
+            } else if(game.state == 1) {
+                Image(systemName: "pencil.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 32)
+                    .foregroundColor(.yellow)
+            } else if (game.state == 2) {
+                Image(systemName: "questionmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 32)
+                    .foregroundColor(.yellow)
+            }
+            
+            VStack (alignment: .leading) {
+                HStack {
+                    if(otherPlayer != "") {
+                        Text(otherPlayer)
+                            .bold()
+                            .textCase(.uppercase)
+                    }
+                    Text("(Runde \(game.rounds))")
+                        .font(Font.headline.weight(.light))
+                }
             if(userId == game.activeUser) {
                 Text("Du bist dran!").font(.caption).foregroundColor(.red)
             }
@@ -69,6 +98,7 @@ struct LoadGameView: View {
             } else {
                 Text("Warten auf Mitspieler...").font(.caption)
             }
+        }
         }
     }
 }

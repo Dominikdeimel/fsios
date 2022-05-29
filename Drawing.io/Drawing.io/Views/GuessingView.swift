@@ -16,38 +16,40 @@ struct GuessingView: View {
     var gameId: String? = nil
     
     @FocusState private var fieldIsFocused: Bool
-    @EnvironmentObject var viewModel: ViewModel 
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         if(!showScore){
             VStack {
-                    Image(uiImage: viewModel.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                Image(uiImage: viewModel.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
                 TextField(
                     "Wort",
                     text: $word
                 )
-                .focused($fieldIsFocused)
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
-                Button("Raten") {
-                    if (viewModel.matchWords(word, viewModel.given)) {
-                        showScore = true
-                    } else {
-                        if(roundScore > 1){
-                            roundScore -= 1
+                    .focused($fieldIsFocused)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+                    .underlineTextField()
+                CoolButton(buttonText: "Raten")
+                    .onTapGesture {
+                        if (viewModel.matchWords(word, viewModel.given)) {
+                            showScore = true
+                        } else {
+                            if(roundScore > 1){
+                                roundScore -= 1
+                            }
+                            notMatchedAlert = true
+                            word = ""
                         }
-                        notMatchedAlert = true
-                        word = ""
                     }
-                }
-                .alert(isPresented: $notMatchedAlert) {
-                    Alert(
-                        title: Text("Falsches Wort"),
-                        dismissButton: .default(Text("Nochmal versuchen"))
-                    )
-                }
+                    .alert(isPresented: $notMatchedAlert) {
+                        Alert(
+                            title: Text("Falsches Wort"),
+                            dismissButton: .default(Text("Nochmal versuchen"))
+                        )
+                    }
             } .padding()
                 .onAppear {
                     viewModel.loadGame(gameId)
@@ -57,11 +59,11 @@ struct GuessingView: View {
                 VStack {
                     Text(viewModel.given + " war richtig!")
                         .font(.title2)
-                        Image(uiImage: viewModel.image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.horizontal)
-                            .padding(.vertical)
+                    Image(uiImage: viewModel.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(.horizontal)
+                        .padding(.vertical)
                     Text("Punkte: " + String(self.roundScore))
                     Text("Gesamt: " + viewModel.score)
                     ConfettiCannon(counter: $counter)
