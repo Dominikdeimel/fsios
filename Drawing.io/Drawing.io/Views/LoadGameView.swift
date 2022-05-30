@@ -18,7 +18,7 @@ struct NavigationLazyView<Content: View>: View {
 }
 
 struct LoadGameView: View {
-    
+    let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     @Binding var gameId: String?
     @Binding var showView: Int
     
@@ -26,30 +26,30 @@ struct LoadGameView: View {
     private let errorMessages = ErrorMessages()
     
     var body: some View {
-        let userId = UserDefaults.standard.string(forKey: "userId") ?? errorMessages.missingUserId
-        //        if(!viewModel.games.isEmpty) {
-        return List(viewModel.games, id: \.gameId) { game in
-            HStack {
-                content(userId: userId, game: game)
-                Spacer()
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                if(userId == game.activeUser) {
-                    showView = game.state
-                    gameId = game.gameId
+        HStack {
+        if(!viewModel.games.isEmpty) {
+            List(viewModel.games, id: \.gameId) { game in
+                HStack {
+                    content(userId: userId, game: game)
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if(userId == game.activeUser) {
+                        showView = game.state
+                        gameId = game.gameId
+                    }
                 }
             }
-        }.onAppear {
-            viewModel.getAllGamesByUserId()
+    } else {
+            Text("Aktuell keine laufenden Spiele")
+                .font(.headline)
         }
-        .refreshable {
-            viewModel.getAllGamesByUserId()
-        }
-        //        } else {
-        //            return Text("Aktuell keine laufenden Spiele")
-        //                .font(.headline)
-        //        }
+    }.refreshable {
+        viewModel.getAllGamesByUserId()
+    }.onAppear {
+        viewModel.getAllGamesByUserId()
+    }
     }
     
     
@@ -92,18 +92,18 @@ struct LoadGameView: View {
                     Text("(Runde \(game.rounds))")
                         .font(Font.headline.weight(.light))
                 }
-            if(userId == game.activeUser) {
-                Text("Du bist dran!").font(.caption).foregroundColor(.red)
+                if(userId == game.activeUser) {
+                    Text("Du bist dran!").font(.caption).foregroundColor(.red)
+                }
+                else if(game.state == 1) {
+                    Text("\(otherPlayer) zeichnet gerade!").font(.caption)
+                }
+                else if(game.state == 2) {
+                    Text("\(otherPlayer) rät gerade!").font(.caption)
+                } else {
+                    Text("Warten auf Mitspieler...").font(.caption)
+                }
             }
-            else if(game.state == 1) {
-                Text("\(otherPlayer) zeichnet gerade!").font(.caption)
-            }
-            else if(game.state == 2) {
-                Text("\(otherPlayer) rät gerade!").font(.caption)
-            } else {
-                Text("Warten auf Mitspieler...").font(.caption)
-            }
-        }
         }
     }
     
