@@ -19,22 +19,39 @@ struct ScoreView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text(viewModel.given)
+                HStack {
+                    Text(viewModel.given).foregroundColor(.red).font(.title2).bold()
+                    Text("ist richtig!").bold()
+                }
+                .padding(.top)
                 Image(uiImage: viewModel.image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .border(.gray)
-                Text("Score: " + String(self.roundScore))
-                Text("Gesamtscore: " + viewModel.score)
-                ConfettiCannon(counter: $counter)
-                CoolButton(buttonText: "Draw").onTapGesture {
-                    showView = 1
-                    gameId = viewModel.currentGame?.gameId 
+                    .padding([.leading, .bottom, .trailing])
+                HStack {
+                    VStack {
+                        Text("Punkte")
+                        Text(String(self.roundScore)).bold()
+                    }
+                    .padding(.trailing)
+                    Divider().padding().frame(height: 100.0)
+                    VStack {
+                        Text("Gesamt")
+                        Text(viewModel.score).bold()
+                    }
+                    .padding(.leading)
                 }
-            }
+                ConfettiCannon(counter: $counter)
+                CoolButton(buttonText: "Weiterzeichnen")
+                    .padding(.top)
+                    .onTapGesture {
+                        showView = 1
+                        gameId = viewModel.currentGame?.gameId
+                    }
             .padding()
             .onTapGesture {
                 counter += 1
+            }
             }
             ConfettiCannon(counter: $counter)
         }
