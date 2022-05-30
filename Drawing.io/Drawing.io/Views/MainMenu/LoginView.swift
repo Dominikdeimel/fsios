@@ -19,24 +19,25 @@ struct LoginView: View {
     @State private var userName: String = ""
     @State private var invalidInput = false
     private let userPrefs = UserPreferencesKeys()
-
+    
     var body: some View {
         VStack {
             TextField(
                 "Benutzername",
                 text: $userName
             )
-            .border(.secondary)
-            .padding()
-            Button("Fertig"){
-                if userName.count > 0 {
-                    UserDefaults.standard.set(userName, forKey: userPrefs.username)
-                    viewModel.generateUserId(userName)
-                    
-                } else {
-                    invalidInput.toggle()
+                .underlineTextField()
+                .padding()
+            CoolButton(buttonText: "Login")
+                .onTapGesture {
+                    if userName.count > 0 {
+                        UserDefaults.standard.set(userName, forKey: userPrefs.username)
+                        viewModel.generateUserId(userName)
+                        
+                    } else {
+                        invalidInput.toggle()
+                    }
                 }
-            }
         }
         .alert(isPresented: $invalidInput) {
             Alert(
@@ -53,7 +54,7 @@ struct LoginView: View {
         .onReceive(UserDefaults.standard.publisher(for: \.userId)) { id in
             guard id != nil else { return }
             presentationMode.wrappedValue.dismiss()
-           
+            
         }
     }
 }

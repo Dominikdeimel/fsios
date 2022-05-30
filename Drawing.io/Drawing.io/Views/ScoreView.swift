@@ -2,33 +2,56 @@
 //  ScoreView.swift
 //  Drawing.io
 //
-//  Created by Anja on 16.03.22.
+//  Created by Anja on 28.05.22.
 //
 
 import SwiftUI
 
 struct ScoreView: View {
-    let roundScore: Int
     
-    @EnvironmentObject var viewModel: ViewModel
+    @Binding var gameId: String?
+    @Binding var showView: Int
+    @Binding var roundScore: Int
+    
     @State var counter: Int = 1
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         ZStack {
             VStack {
-                Text(viewModel.given)
+                HStack {
+                    Text(viewModel.given).foregroundColor(.red).font(.title2).bold()
+                    Text("ist richtig!").bold()
+                }
+                .padding(.top)
                 Image(uiImage: viewModel.image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .border(.gray)
-                Text("Score: " + String(self.roundScore))
-                Text("Gesamtscore: " + viewModel.score)
+                    .padding([.leading, .bottom, .trailing])
+                HStack {
+                    VStack {
+                        Text("Punkte")
+                        Text(String(self.roundScore)).bold()
+                    }
+                    .padding(.trailing)
+                    Divider().padding().frame(height: 100.0)
+                    VStack {
+                        Text("Gesamt")
+                        Text(viewModel.score).bold()
+                    }
+                    .padding(.leading)
+                }
                 ConfettiCannon(counter: $counter)
-            }
+                CoolButton(buttonText: "Weiterzeichnen")
+                    .padding(.top)
+                    .onTapGesture {
+                        showView = 1
+                        gameId = viewModel.currentGame?.gameId
+                    }
             .padding()
             .onTapGesture {
                 counter += 1
-                //viewModel.changeScore()
+            }
             }
             ConfettiCannon(counter: $counter)
         }
@@ -36,13 +59,13 @@ struct ScoreView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 counter += 1
             }
-            //viewModel.finishRound(self.roundScore)
+            viewModel.finishRound(self.roundScore)
         }
     }
 }
 
 //struct ScoreView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        ScoreView()
+//        ScoreView(roundScore: 5)
 //    }
 //}
