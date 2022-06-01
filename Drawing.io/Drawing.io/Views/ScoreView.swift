@@ -48,10 +48,10 @@ struct ScoreView: View {
                         showView = 1
                         gameId = viewModel.currentGame?.gameId
                     }
-            .padding()
-            .onTapGesture {
-                counter += 1
-            }
+                    .padding()
+                    .onTapGesture {
+                        counter += 1
+                    }
             }
             ConfettiCannon(counter: $counter)
         }
