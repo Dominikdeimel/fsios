@@ -20,7 +20,7 @@ struct ScoreView: View {
         ZStack {
             VStack {
                 HStack {
-                    Text(viewModel.given).foregroundColor(.green).font(.title2).bold()
+                    Text(viewModel.given.uppercased()).foregroundColor(.green).font(.title2).bold()
                     Text("ist richtig!").bold()
                 }
                 .padding(.top)
@@ -49,9 +49,9 @@ struct ScoreView: View {
                         gameId = viewModel.currentGame?.gameId
                     }
                     .padding()
-                    .onTapGesture {
-                        counter += 1
-                    }
+            }
+            .onTapGesture {
+                counter += 1
             }
             ConfettiCannon(counter: $counter)
         }

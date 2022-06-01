@@ -143,6 +143,7 @@ class ViewModel: ObservableObject {
             print(err)
         }, receiveValue: { totalScore in
             self.score = totalScore
+            self.image = UIImage()
         })
     }
     
