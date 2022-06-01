@@ -49,7 +49,7 @@ struct GuessingView: View {
                     )
                 }
         } .padding()
-        .onAppear {
+            .onAppear {
                 viewModel.loadGame(gameId)
             }
     }

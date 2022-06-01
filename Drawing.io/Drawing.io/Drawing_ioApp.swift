@@ -34,11 +34,9 @@ struct Drawing_ioApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     private let userPrefs = UserPreferencesKeys()
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        
         registerForPushNotifications()
-        
         return true
     }
     
@@ -69,15 +67,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenParts.joined()
         UserDefaults.standard.set(token, forKey: userPrefs.deviceToken)
-
+        
         print("Device Token: \(token)")
     }
     
     func application(
-      _ application: UIApplication,
-      didFailToRegisterForRemoteNotificationsWithError error: Error
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
-      print("Failed to register: \(error)")
+        print("Failed to register: \(error)")
     }
     
 }

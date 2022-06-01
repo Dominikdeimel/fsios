@@ -32,7 +32,7 @@ struct LoginView: View {
                 .onTapGesture {
                     if userName.count > 0 {
                         UserDefaults.standard.set(userName, forKey: userPrefs.username)
-                        viewModel.generateUserId(userName)
+                        viewModel.getUserId(userName)
                         
                     } else {
                         invalidInput.toggle()

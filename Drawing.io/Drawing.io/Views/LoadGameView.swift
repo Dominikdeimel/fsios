@@ -7,16 +7,6 @@
 
 import SwiftUI
 
-struct NavigationLazyView<Content: View>: View {
-    let build: () -> Content
-    init(_ build: @autoclosure @escaping () -> Content) {
-        self.build = build
-    }
-    var body: Content {
-        build()
-    }
-}
-
 struct LoadGameView: View {
     let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
     @Binding var gameId: String?
@@ -27,29 +17,29 @@ struct LoadGameView: View {
     
     var body: some View {
         HStack {
-        if(!viewModel.games.isEmpty) {
-            List(viewModel.games, id: \.gameId) { game in
-                HStack {
-                    content(userId: userId, game: game)
-                    Spacer()
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if(userId == game.activeUser) {
-                        showView = game.state
-                        gameId = game.gameId
+            if(!viewModel.games.isEmpty) {
+                List(viewModel.games, id: \.gameId) { game in
+                    HStack {
+                        content(userId: userId, game: game)
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if(userId == game.activeUser) {
+                            showView = game.state
+                            gameId = game.gameId
+                        }
                     }
                 }
+            } else {
+                Text("Aktuell keine laufenden Spiele")
+                    .font(.headline)
             }
-    } else {
-            Text("Aktuell keine laufenden Spiele")
-                .font(.headline)
+        }.refreshable {
+            viewModel.getGamesByUserId()
+        }.onAppear {
+            viewModel.getGamesByUserId()
         }
-    }.refreshable {
-        viewModel.getAllGamesByUserId()
-    }.onAppear {
-        viewModel.getAllGamesByUserId()
-    }
     }
     
     

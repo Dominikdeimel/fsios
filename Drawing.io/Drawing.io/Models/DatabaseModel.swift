@@ -24,10 +24,10 @@ struct DatabaseModel {
         
     }
     
-    func deleteFailedImagePost(_ failedRequest: FailedRequest, _ context: NSManagedObjectContext) {
+    func deleteFailedRequest(_ failedRequest: FailedRequest, _ context: NSManagedObjectContext) {
         context.delete(failedRequest)
         try? context.save()
-       
+        
     }
 }
 

@@ -30,8 +30,8 @@ struct GameView: View {
     }
 }
 
-struct GameView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameView(gameId: nil, showView: 0, roundScore: 0)
-    }
-}
+//struct GameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GameView(gameId: nil, showView: 0, roundScore: 0)
+//    }
+//}
