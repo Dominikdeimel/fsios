@@ -20,7 +20,7 @@ struct ScoreView: View {
         ZStack {
             VStack {
                 HStack {
-                    Text(viewModel.given).foregroundColor(.red).font(.title2).bold()
+                    Text(viewModel.given.uppercased()).foregroundColor(.green).font(.title2).bold()
                     Text("ist richtig!").bold()
                 }
                 .padding(.top)
