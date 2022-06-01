@@ -26,7 +26,7 @@ class ViewModel: ObservableObject {
     @Published var games = Array<Game>()
     @Published var showNoConnectionAlert = false
     @Published var gameExists = false
-
+    
     var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -48,9 +48,9 @@ class ViewModel: ObservableObject {
         })
     }
     
-    func getAllGamesByUserId() {
+    func getGamesByUserId() {
         self.getCancellable?.cancel()
-        self.getCancellable = networkModel.getAllGamesByUserId().sink(receiveCompletion: {
+        self.getCancellable = networkModel.getGamesByUserId().sink(receiveCompletion: {
             err in print(err)
         }, receiveValue: { games in
             self.games = games
@@ -59,7 +59,7 @@ class ViewModel: ObservableObject {
     
     func loadWord() {
         self.getCancellable?.cancel()
-        self.getCancellable = networkModel.getRandomWord().sink(receiveValue: { word in
+        self.getCancellable = networkModel.getWord().sink(receiveValue: { word in
             self.given = word ?? "Haus"
         })
     }
@@ -105,22 +105,22 @@ class ViewModel: ObservableObject {
             self.postCancellable = networkModel.postInitalData(failedRequest.imageAsBase64!, failedRequest.word!).sink(receiveCompletion: { _ in
             }, receiveValue: {statuscode in
                 if(statuscode == 200){
-                    self.databaseModel.deleteFailedImagePost(failedRequest, self.context)
+                    self.databaseModel.deleteFailedRequest(failedRequest, self.context)
                 }            })
         case "postData":
             self.postCancellable = networkModel.postData(failedRequest.imageAsBase64!, failedRequest.word!, failedRequest.gameId!).sink(receiveCompletion: { _ in
             }, receiveValue: {statuscode in
                 if(statuscode == 200){
-                    self.databaseModel.deleteFailedImagePost(failedRequest, self.context)
+                    self.databaseModel.deleteFailedRequest(failedRequest, self.context)
                 }            })
         default: print("Nicht definierter failedRequestType")
         }
         
     }
     
-    func generateUserId(_ name: String){
+    func getUserId(_ name: String){
         self.postCancellable?.cancel()
-        self.postCancellable = networkModel.generateUserId(name).sink { id in
+        self.postCancellable = networkModel.getUserId(name).sink { id in
             if(id != nil){
                 UserDefaults.standard.set(id, forKey: "userId")
             } else {
@@ -139,7 +139,7 @@ class ViewModel: ObservableObject {
     
     func finishRound(_ roundScore: Int){
         self.postCancellable?.cancel()
-        self.postCancellable = networkModel.postRoundInformation(roundScore: roundScore, gameId: currentGame!.gameId).sink(receiveCompletion: { err in
+        self.postCancellable = networkModel.postScore(roundScore: roundScore, gameId: currentGame!.gameId).sink(receiveCompletion: { err in
             print(err)
         }, receiveValue: { totalScore in
             self.score = totalScore
