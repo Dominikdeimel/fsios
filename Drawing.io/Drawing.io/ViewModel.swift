@@ -74,10 +74,12 @@ class ViewModel: ObservableObject {
                     break
                 case .failure(_):
                     self.databaseModel.createFailedRequests(requestType: FailedRequestType.initialDataPost, gameId: "", image: image, word: self.given, self.context)
+                    self.image = UIImage()
                 }
             }, receiveValue: {code in
                 if code != 200 {
                     self.databaseModel.createFailedRequests(requestType: FailedRequestType.initialDataPost, gameId: "", image: image, word: self.given, self.context)
+                    self.image = UIImage()
                 }
             })
         } else {
@@ -88,10 +90,12 @@ class ViewModel: ObservableObject {
                     break
                 case .failure(_):
                     self.databaseModel.createFailedRequests(requestType: FailedRequestType.dataPost, gameId: gameId ?? "", image: image, word: self.given, self.context)
+                    self.image = UIImage()
                 }
             }, receiveValue: {code in
                 if code != 200 {
                     self.databaseModel.createFailedRequests(requestType: FailedRequestType.dataPost, gameId: gameId ?? "", image: image, word: self.given, self.context)
+                    self.image = UIImage()
                 }
             })
         }
@@ -143,7 +147,6 @@ class ViewModel: ObservableObject {
             print(err)
         }, receiveValue: { totalScore in
             self.score = totalScore
-            self.image = UIImage()
         })
     }
     
