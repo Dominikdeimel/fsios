@@ -37,17 +37,18 @@ class ViewModel: ObservableObject {
     
     func loadGame(_ gameId: String?) {
         self.getCancellable?.cancel()
-        self.gameExists = false
+        //self.gameExists = false
         self.getCancellable = networkModel.getGame(gameId).sink(receiveCompletion: {
             result in
             switch result {
             case .finished:
                 break
             case .failure(_):
-                self.unmatchable = true
+                if(!self.gameExists){
+                    self.unmatchable = true
+                }
             }
         }, receiveValue: { game in
-            print(game)
             let imageData = Data(base64Encoded: game.image)
             if let imageData = imageData, let image = UIImage(data: imageData) {
                 self.image = image
