@@ -135,7 +135,8 @@ struct NetworkModel {
 }
 
 private struct Urls {
-    static let baseUrl = "https://rocky-badlands-68612.herokuapp.com"
+    //static let baseUrl = "https://rocky-badlands-68612.herokuapp.com"
+    static let baseUrl = "http://localhost:3000"
     let game_guessing = "\(baseUrl)/game/guessing"
     let game_all = "\(baseUrl)/game/all"
     let word = "\(baseUrl)/word"

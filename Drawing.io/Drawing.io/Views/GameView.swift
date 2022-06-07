@@ -17,9 +17,6 @@ struct GameView: View {
         switch showView {
         case 0:
             LoadGameView(gameId: $gameId, showView: $showView)
-                .onAppear {
-                    viewModel.getGamesByUserId()
-                }
         case 1:
             DrawingView(gameId: $gameId, showView: $showView)
         case 2:

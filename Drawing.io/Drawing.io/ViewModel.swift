@@ -26,6 +26,7 @@ class ViewModel: ObservableObject {
     @Published var games = Array<Game>()
     @Published var showNoConnectionAlert = false
     @Published var gameExists = false
+    @Published var unmatchable = false
     @Published var roundScore = 5
     
     var context: NSManagedObjectContext
@@ -36,9 +37,17 @@ class ViewModel: ObservableObject {
     
     func loadGame(_ gameId: String?) {
         self.getCancellable?.cancel()
+        self.gameExists = false
         self.getCancellable = networkModel.getGame(gameId).sink(receiveCompletion: {
-            err in print(err)
+            result in
+            switch result {
+            case .finished:
+                break
+            case .failure(_):
+                self.unmatchable = true
+            }
         }, receiveValue: { game in
+            print(game)
             let imageData = Data(base64Encoded: game.image)
             if let imageData = imageData, let image = UIImage(data: imageData) {
                 self.image = image

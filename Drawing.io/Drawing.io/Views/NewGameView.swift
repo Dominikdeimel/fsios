@@ -12,8 +12,6 @@ struct NewGameView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.managedObjectContext) var context
-    @State private var unmatchable = false
-    @State private var gameExists = false
     
     var body: some View {
         VStack {
@@ -22,17 +20,12 @@ struct NewGameView: View {
                 CoolButton(buttonText: "Zeichnen")
             }
             Spacer()
-            NavigationLink(destination: GameView(gameId: nil, showView: 2), isActive: $gameExists) {
+            NavigationLink(destination: GameView(gameId: nil, showView: 2), isActive: $viewModel.gameExists) {
                 CoolButton(buttonText: "Raten").onTapGesture {
                     viewModel.loadGame(nil)
-                    if(viewModel.gameExists) {
-                        gameExists = true
-                    } else {
-                        unmatchable = true
-                    }
                 }
             }
-            .alert(isPresented: $unmatchable) {
+            .alert(isPresented: $viewModel.unmatchable) {
                 Alert(
                     title: Text("Kein Spiel verfügbar"),
                     message: Text("Aktuell kannst du kein Spiel mit Erraten beginnen, da keine offenen Spiele existieren. Versuche, mit Zeichnen zu beginnen.")
