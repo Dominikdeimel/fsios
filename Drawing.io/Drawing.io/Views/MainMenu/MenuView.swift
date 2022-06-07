@@ -37,7 +37,7 @@ struct MenuView: View {
                     CoolButton(buttonText: "Neues Spiel")
                 }
                 .padding(.vertical)
-                NavigationLink(destination: GameView(gameId: nil, showView: 0, roundScore: 0)) {
+                NavigationLink(destination: GameView(gameId: nil, showView: 0)) {
                     CoolButton(buttonText: "Spiel laden")
                 }
                 .padding(.top)

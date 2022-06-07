@@ -26,6 +26,7 @@ class ViewModel: ObservableObject {
     @Published var games = Array<Game>()
     @Published var showNoConnectionAlert = false
     @Published var gameExists = false
+    @Published var roundScore = 5
     
     var context: NSManagedObjectContext
     
@@ -141,9 +142,9 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func finishRound(_ roundScore: Int){
+    func finishRound(){
         self.postCancellable?.cancel()
-        self.postCancellable = networkModel.postScore(roundScore: roundScore, gameId: currentGame!.gameId).sink(receiveCompletion: { err in
+        self.postCancellable = networkModel.postScore(roundScore: self.roundScore, gameId: currentGame!.gameId).sink(receiveCompletion: { err in
             print(err)
         }, receiveValue: { totalScore in
             self.score = totalScore

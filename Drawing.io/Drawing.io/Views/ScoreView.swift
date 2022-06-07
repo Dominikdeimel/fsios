@@ -11,7 +11,6 @@ struct ScoreView: View {
     
     @Binding var gameId: String?
     @Binding var showView: Int
-    @Binding var roundScore: Int
     
     @State var counter: Int = 1
     @EnvironmentObject var viewModel: ViewModel
@@ -31,7 +30,7 @@ struct ScoreView: View {
                 HStack {
                     VStack {
                         Text("Punkte")
-                        Text(String(self.roundScore)).bold()
+                        Text(String(viewModel.roundScore)).bold()
                     }
                     .padding(.trailing)
                     Divider().padding().frame(height: 100.0)
@@ -59,7 +58,7 @@ struct ScoreView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 counter += 1
             }
-            viewModel.finishRound(self.roundScore)
+            viewModel.finishRound()
         }
     }
 }

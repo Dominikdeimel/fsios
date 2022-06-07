@@ -11,7 +11,6 @@ struct GuessingView: View {
     
     @Binding var gameId: String?
     @Binding var showView: Int
-    @Binding var roundScore: Int
     
     @State private var word: String = ""
     @State var notMatchedAlert = false
@@ -35,11 +34,13 @@ struct GuessingView: View {
             CoolButton(buttonText: "Raten")
                 .onTapGesture {
                     if (viewModel.matchWords(word, viewModel.given)) {
+                        
                         showView = 3
                     } else {
-                        if(roundScore > 1){
-                            roundScore -= 1
+                        if(viewModel.roundScore > 1){
+                            viewModel.roundScore -= 1
                         }
+                        notMatchedAlert = true
                     }
                 }
                 .alert(isPresented: $notMatchedAlert) {
@@ -51,6 +52,7 @@ struct GuessingView: View {
         } .padding()
             .onAppear {
                 viewModel.loadGame(gameId)
+                viewModel.roundScore = 5
             }
     }
 }

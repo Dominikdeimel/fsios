@@ -10,7 +10,6 @@ import SwiftUI
 struct GameView: View {
     @State var gameId: String?
     @State var showView: Int = 0
-    @State var roundScore: Int = 5
     
     @EnvironmentObject var viewModel: ViewModel
     
@@ -18,12 +17,15 @@ struct GameView: View {
         switch showView {
         case 0:
             LoadGameView(gameId: $gameId, showView: $showView)
+                .onAppear {
+                    viewModel.getGamesByUserId()
+                }
         case 1:
             DrawingView(gameId: $gameId, showView: $showView)
         case 2:
-            GuessingView(gameId: $gameId, showView: $showView, roundScore: $roundScore)
+            GuessingView(gameId: $gameId, showView: $showView)
         case 3:
-            ScoreView(gameId: $gameId, showView: $showView, roundScore: $roundScore)
+            ScoreView(gameId: $gameId, showView: $showView)
         default:
             EmptyView()
         }
